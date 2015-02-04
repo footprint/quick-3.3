@@ -1,5 +1,5 @@
 /****************************************************************************
- Copyright (c) 2014 cocos2d-x.org
+ Copyright (c) 2013-2014 Chukong Technologies Inc.
  
  http://www.cocos2d-x.org
  
@@ -22,32 +22,13 @@
  THE SOFTWARE.
  ****************************************************************************/
 
-#ifndef __cocos2d_libs__ProjectNodeReader__
-#define __cocos2d_libs__ProjectNodeReader__
+#include "UIShaders.h"
 
-#include "cocos2d.h"
-#include "cocostudio/CocosStudioExport.h"
-#include "cocostudio/WidgetReader/NodeReaderProtocol.h"
+#define STRINGIFY(A)  #A
 
+NS_CC_BEGIN
 
-namespace cocostudio
-{
-    class CC_STUDIO_DLL ProjectNodeReader : public cocos2d::Ref, public NodeReaderProtocol
-    {
-        
-    public:
-        ProjectNodeReader();
-        ~ProjectNodeReader();
-        
-        static ProjectNodeReader* getInstance();
-        static void purge();
-        
-        flatbuffers::Offset<flatbuffers::Table> createOptionsWithFlatBuffers(const tinyxml2::XMLElement* objectData,
-                                                                             flatbuffers::FlatBufferBuilder* builder);
+//include the gray scale shader
+#include "ccShader_grayscale.frag"
 
-        void setPropsWithFlatBuffers(cocos2d::Node* node, const flatbuffers::Table* projectNodeOptions);
-        cocos2d::Node* createNodeWithFlatBuffers(const flatbuffers::Table* nodeOptions) { return nullptr; };
-    };
-}
-
-#endif /* defined(__cocos2d_libs__ProjectNodeReader__) */
+NS_CC_END

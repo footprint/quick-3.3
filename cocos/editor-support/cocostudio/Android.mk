@@ -5,11 +5,7 @@ LOCAL_MODULE := cocostudio_static
 
 LOCAL_MODULE_FILENAME := libcocostudio
 
-LOCAL_SRC_FILES := 
-
-ifeq ($(CC_USE_CCSTUDIO),1)
-LOCAL_SRC_FILES += \
-CCActionFrame.cpp \
+LOCAL_SRC_FILES := CCActionFrame.cpp \
 CCActionFrameEasing.cpp \
 CCActionManagerEx.cpp \
 CCActionNode.cpp \
@@ -70,10 +66,12 @@ ActionTimeline/CCActionTimelineCache.cpp \
 ActionTimeline/CCFrame.cpp \
 ActionTimeline/CCTimeLine.cpp \
 ActionTimeline/CCActionTimeline.cpp \
+ActionTimeline/CCActionTimelineNode.cpp \
 ActionTimeline/CSLoader.cpp \
 FlatBuffersSerialize.cpp \
-WidgetCallBackHandlerProtocol.cpp
-endif
+WidgetCallBackHandlerProtocol.cpp \
+WidgetReader/ArmatureNodeReader/ArmatureNodeReader.cpp
+
 
 LOCAL_EXPORT_C_INCLUDES := $(LOCAL_PATH)/..
 
