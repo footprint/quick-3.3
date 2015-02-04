@@ -233,6 +233,12 @@
 -- @param #vec2_table anchorPoint
         
 --------------------------------
+-- Returns the "class name" of widget.
+-- @function [parent=#EditBox] getDescription 
+-- @param self
+-- @return string#string ret (return value: string)
+        
+--------------------------------
 -- 
 -- @function [parent=#EditBox] setPosition 
 -- @param self

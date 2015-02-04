@@ -28,24 +28,10 @@
 -- Also, flipping the texture doesn't alter the anchorPoint.<br>
 -- If you want to flip the anchorPoint too, and/or to flip the children too use:<br>
 -- widget->setScaleX(sprite->getScaleX() * -1);<br>
--- return true if the widget is flipped horizaontally, false otherwise.
+-- return true if the widget is flipped horizontally, false otherwise.
 -- @function [parent=#Scale9Sprite] isFlippedX 
 -- @param self
 -- @return bool#bool ret (return value: bool)
-        
---------------------------------
--- Sets whether the widget should be flipped vertically or not.<br>
--- param bFlippedY true if the widget should be flipped vertically, flase otherwise.
--- @function [parent=#Scale9Sprite] setFlippedY 
--- @param self
--- @param #bool flippedY
-        
---------------------------------
--- Sets whether the widget should be flipped horizontally or not.<br>
--- param bFlippedX true if the widget should be flipped horizaontally, false otherwise.
--- @function [parent=#Scale9Sprite] setFlippedX 
--- @param self
--- @param #bool flippedX
         
 --------------------------------
 -- 
@@ -54,9 +40,40 @@
 -- @param #bool enabled
         
 --------------------------------
+-- Sets whether the widget should be flipped vertically or not.<br>
+-- param bFlippedY true if the widget should be flipped vertically, false otherwise.
+-- @function [parent=#Scale9Sprite] setFlippedY 
+-- @param self
+-- @param #bool flippedY
+        
+--------------------------------
+-- Sets whether the widget should be flipped horizontally or not.<br>
+-- param bFlippedX true if the widget should be flipped horizontally, false otherwise.
+-- @function [parent=#Scale9Sprite] setFlippedX 
+-- @param self
+-- @param #bool flippedX
+        
+--------------------------------
+-- Creates and returns a new sprite object with the specified cap insets.<br>
+-- You use this method to add cap insets to a sprite or to change the existing<br>
+-- cap insets of a sprite. In both cases, you get back a new image and the<br>
+-- original sprite remains untouched.<br>
+-- param capInsets The values to use for the cap insets.
+-- @function [parent=#Scale9Sprite] resizableSpriteWithCapInsets 
+-- @param self
+-- @param #rect_table capInsets
+-- @return Scale9Sprite#Scale9Sprite ret (return value: ccui.Scale9Sprite)
+        
+--------------------------------
 -- 
 -- @function [parent=#Scale9Sprite] disableCascadeOpacity 
 -- @param self
+        
+--------------------------------
+-- since v3.4
+-- @function [parent=#Scale9Sprite] setState 
+-- @param self
+-- @param #int state
         
 --------------------------------
 -- 
@@ -108,12 +125,6 @@
         
 --------------------------------
 -- 
--- @function [parent=#Scale9Sprite] getInsetRight 
--- @param self
--- @return float#float ret (return value: float)
-        
---------------------------------
--- 
 -- @function [parent=#Scale9Sprite] setSpriteFrame 
 -- @param self
 -- @param #cc.SpriteFrame spriteFrame
@@ -126,15 +137,10 @@
 -- @return float#float ret (return value: float)
         
 --------------------------------
--- Creates and returns a new sprite object with the specified cap insets.<br>
--- You use this method to add cap insets to a sprite or to change the existing<br>
--- cap insets of a sprite. In both cases, you get back a new image and the<br>
--- original sprite remains untouched.<br>
--- param capInsets The values to use for the cap insets.
--- @function [parent=#Scale9Sprite] resizableSpriteWithCapInsets 
+-- 
+-- @function [parent=#Scale9Sprite] getCapInsets 
 -- @param self
--- @param #rect_table capInsets
--- @return Scale9Sprite#Scale9Sprite ret (return value: ccui.Scale9Sprite)
+-- @return rect_table#rect_table ret (return value: rect_table)
         
 --------------------------------
 -- 
@@ -144,9 +150,9 @@
         
 --------------------------------
 -- 
--- @function [parent=#Scale9Sprite] getCapInsets 
+-- @function [parent=#Scale9Sprite] getInsetRight 
 -- @param self
--- @return rect_table#rect_table ret (return value: rect_table)
+-- @return float#float ret (return value: float)
         
 --------------------------------
 -- 
@@ -299,8 +305,8 @@
 -- @overload self, float         
 -- @function [parent=#Scale9Sprite] setScale
 -- @param self
--- @param #float scalex
--- @param #float scaley
+-- @param #float scaleX
+-- @param #float scaleY
 
 --------------------------------
 -- 
