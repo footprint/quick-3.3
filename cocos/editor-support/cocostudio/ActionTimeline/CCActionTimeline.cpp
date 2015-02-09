@@ -95,7 +95,7 @@ void ActionTimeline::play(std::string name, bool loop)
 {
     if (_animationInfos.find(name) == _animationInfos.end())
     {
-        CCLOG("Can't find animation info for %s", name.c_str());
+//        CCLOG("Can't find animation info for %s", name.c_str());
         return;
     }
 
@@ -163,7 +163,7 @@ void ActionTimeline::setCurrentFrame(int frameIndex)
     }
     else
     {
-        CCLOG("frame index is not between start frame and end frame");
+//        CCLOG("frame index is not between start frame and end frame");
     }
 }
 
