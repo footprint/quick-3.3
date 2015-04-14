@@ -20,28 +20,18 @@
 
 NS_GAF_BEGIN
 
-template<typename C, typename T>
-void eraseUserData(T objects)
-{
-    for (auto i : objects)
-    {
-        if (i)
-        {
-            void* d = i->getUserData();
-            if (d)
-                delete reinterpret_cast<C*>(d);
-        }
-    }
-}
+static const AnimationSequences_t s_emptySequences = AnimationSequences_t();
 
 cocos2d::AffineTransform GAFObject::GAF_CGAffineTransformCocosFormatFromFlashFormat(cocos2d::AffineTransform aTransform)
 {
     cocos2d::AffineTransform transform = aTransform;
     transform.b = -transform.b;
     transform.c = -transform.c;
-    transform.ty = -transform.ty;
+    float flipMul = isFlippedY() ? -2 : 2;
+    transform.ty = getAnchorPointInPoints().y * flipMul - transform.ty;
     return transform;
 }
+
 
 GAFObject::GAFObject() :
 m_timelineParentObject(nullptr),
@@ -67,12 +57,10 @@ m_nScriptHandler(0)
     m_charType = GAFCharacterType::Timeline;
     m_parentColorTransforms[0] = cocos2d::Vec4::ONE;
     m_parentColorTransforms[1] = cocos2d::Vec4::ZERO;
-    setUserData(reinterpret_cast<void*>(&m_lastVisibleInFrame));
 }
 
 GAFObject::~GAFObject()
 {
-    eraseUserData<uint32_t>(m_masks);
     GAF_SAFE_RELEASE_ARRAY_WITH_NULL_CHECK(MaskList_t, m_masks);
     GAF_SAFE_RELEASE_ARRAY_WITH_NULL_CHECK(DisplayList_t, m_displayList);
     CC_SAFE_RELEASE(m_asset);
@@ -190,7 +178,7 @@ GAFObject* GAFObject::_instantiateObject(uint32_t id, GAFCharacterType type, uin
                 result = new GAFMask();
             result->initWithSpriteFrame(spriteFrame);
             result->objectIdRef = id;
-            cocos2d::Vec2 pt = cocos2d::Vec2(0 - (0 - (txElemet->pivotPoint.x / result->getContentSize().width)),
+            cocos2d::Vect pt = cocos2d::Vect(0 - (0 - (txElemet->pivotPoint.x / result->getContentSize().width)),
                 0 + (1 - (txElemet->pivotPoint.y / result->getContentSize().height)));
             result->setAnchorPoint(pt);
 
@@ -241,7 +229,6 @@ void GAFObject::instantiateObject(const AnimationObjects_t& objs, const Animatio
         GAFObject* stencil = _instantiateObject(objectId, charType, reference, true);
         m_displayList[objectId] = stencil;
         cocos2d::ClippingNode* mask = cocos2d::ClippingNode::create(stencil);
-        mask->setUserData(new uint32_t(0));
         mask->retain();
         mask->setAlphaThreshold(0.1);
         m_masks[objectId] = mask;
@@ -258,13 +245,8 @@ GAFObject* GAFObject::encloseNewTimeline(uint32_t reference)
 
     CCAssert(tl != timelines.end(), "Invalid object reference.");
 
-    GAFObject* newObject = GAFObject::create(m_asset, tl->second);
-    newObject->retain();
-    if (!newObject->getIsAnimationRunning())
-    {
-        newObject->m_currentFrame = GAFFirstFrameIndex;
-        newObject->setAnimationRunning(true);
-    }
+    GAFObject* newObject = new GAFObject();
+    newObject->init(m_asset, tl->second);
     return newObject;
 }
 
@@ -273,17 +255,20 @@ void GAFObject::processAnimation()
     realizeFrame(m_container, m_currentFrame);
 }
 
-void GAFObject::setAnimationRunning(bool value)
+void GAFObject::setAnimationRunning(bool value, bool recursive)
 {
     m_isRunning = value;
 
-    for (auto obj : m_displayList)
+    if (recursive)
     {
-        if (obj == nullptr)
+        for (auto obj : m_displayList)
         {
-            continue;
+            if (obj == nullptr)
+            {
+                continue;
+            }
+            obj->setAnimationRunning(value, recursive);
         }
-        obj->setAnimationRunning(value);
     }
 }
 
@@ -312,19 +297,14 @@ void GAFObject::setFramePlayedDelegate(GAFFramePlayedDelegate_t delegate)
     m_framePlayedDelegate = delegate;
 }
 
-void GAFObject::setControlDelegate(GAFObjectControlDelegate_t delegate)
-{
-    m_controlDelegate = delegate;
-}
-
 void GAFObject::start()
 {
     enableTick(true);
 
     if (!m_isRunning)
     {
-        m_currentFrame = GAFFirstFrameIndex;
-        setAnimationRunning(true);
+        m_currentFrame = m_isReversed ? m_totalFrameCount - 1 : GAFFirstFrameIndex;
+        setAnimationRunning(true, true);
     }
 }
 
@@ -334,7 +314,7 @@ void GAFObject::stop()
     if (m_isRunning)
     {
         m_currentFrame = GAFFirstFrameIndex;
-        setAnimationRunning(false);
+        setAnimationRunning(false, true);
     }
 }
 
@@ -367,7 +347,7 @@ void GAFObject::pauseAnimation()
 {
     if (m_isRunning)
     {
-        setAnimationRunning(false);
+        setAnimationRunning(false, false);
     }
 }
 
@@ -375,7 +355,7 @@ void GAFObject::resumeAnimation()
 {
     if (!m_isRunning)
     {
-        setAnimationRunning(true);
+        setAnimationRunning(true, false);
     }
 }
 
@@ -385,15 +365,17 @@ bool GAFObject::isDone() const
     {
         return false;
     }
+
+    return isCurrentFrameLastInSequence();
     
-    if (!m_isReversed)
+    /*if (!m_isReversed)
     {
         return m_currentFrame > m_totalFrameCount;
     }
     else
     {
         return m_currentFrame < GAFFirstFrameIndex - 1;
-    }
+    }*/
 }
 
 bool GAFObject::isLooped() const
@@ -401,17 +383,20 @@ bool GAFObject::isLooped() const
     return m_isLooped;
 }
 
-void GAFObject::setLooped(bool looped)
+void GAFObject::setLooped(bool looped, bool recursive /*= false*/)
 {
     m_isLooped = looped;
 
-    for (auto obj : m_displayList)
+    if (recursive)
     {
-        if (obj == nullptr)
+        for (auto obj : m_displayList)
         {
-            continue;
+            if (obj == nullptr)
+            {
+                continue;
+            }
+            obj->setLooped(looped, recursive);
         }
-        obj->setLooped(looped);
     }
 }
 
@@ -420,9 +405,13 @@ bool GAFObject::isReversed() const
     return m_isReversed;
 }
 
-void GAFObject::setReversed(bool reversed)
+void GAFObject::setReversed(bool reversed, bool fromCurrentFrame /* = true */)
 {
     m_isReversed = reversed;
+    if (!fromCurrentFrame)
+    {
+        m_currentFrame = reversed ? m_currentSequenceEnd - 1 : m_currentSequenceStart;
+    }
 
     for (auto obj : m_displayList)
     {
@@ -430,7 +419,7 @@ void GAFObject::setReversed(bool reversed)
         {
             continue;
         }
-        obj->setReversed(reversed);
+        obj->setReversed(reversed, fromCurrentFrame);
     }
 }
 
@@ -573,9 +562,9 @@ bool GAFObject::playSequence(const std::string& name, bool looped /*= false*/, b
     m_currentSequenceStart = s;
     m_currentSequenceEnd = e;
 
-    m_currentFrame = m_currentSequenceStart;
+    m_currentFrame = m_isReversed ? (e - 1) : (s);
     
-    setLooped(looped);
+    setLooped(looped, false);
 
     if (resume)
     {
@@ -598,42 +587,50 @@ void GAFObject::clearSequence()
 void GAFObject::step()
 {
     m_showingFrame = m_currentFrame;
-    if (!m_isReversed)
+
+    if (!getIsAnimationRunning())
     {
-        if (m_currentFrame < m_currentSequenceStart)
+        processAnimation();
+        return;
+    }
+
+    if (m_timeline)
+    {
+        const GAFAnimationSequence * seq = nullptr;
+        if (!m_isReversed)
         {
-            m_currentFrame = m_currentSequenceStart;
+            seq = m_timeline->getSequenceByLastFrame(m_currentFrame);
+        }
+        else
+        {
+            seq = m_timeline->getSequenceByFirstFrame(m_currentFrame + 1);
         }
 
-        if (m_timeline)
+        if (seq)
         {
-            const GAFAnimationSequence * seq = m_timeline->getSequenceByLastFrame(m_currentFrame);
-            if (seq)
+            if (m_sequenceDelegate)
             {
-                if (m_sequenceDelegate)
-                {
-                    m_sequenceDelegate(this, seq->name);
-                }
-                
-                if (m_nScriptHandler)
-                {
-                    cocos2d::LuaStack *stack = cocos2d::LuaEngine::getInstance()->getLuaStack();
-                    stack->pushObject(this, "gaf.GAFObject");
-                    stack->pushInt(EvntType::Sequence);
-                    stack->pushString(seq->name.c_str());
-                    stack->executeFunctionByHandler(m_nScriptHandler, 3);
-                }
+                m_sequenceDelegate(this, seq->name);
+            }
+            
+            if (m_nScriptHandler)
+            {
+                cocos2d::LuaStack *stack = cocos2d::LuaEngine::getInstance()->getLuaStack();
+                stack->pushObject(this, "gaf.GAFObject");
+                stack->pushInt(EvntType::Sequence);
+                stack->pushString(seq->name.c_str());
+                stack->executeFunctionByHandler(m_nScriptHandler, 3);
             }
         }
+    }
 
-        if (m_isLooped && m_currentFrame > m_currentSequenceEnd - 1)
+    if (isCurrentFrameLastInSequence())
+    {
+        if (m_isLooped)
         {
-            m_currentFrame = m_currentSequenceStart;
-
             if (m_animationStartedNextLoopDelegate)
-            {
                 m_animationStartedNextLoopDelegate(this);
-            }
+            
             if (m_nScriptHandler)
             {
                 cocos2d::LuaStack *stack = cocos2d::LuaEngine::getInstance()->getLuaStack();
@@ -642,14 +639,13 @@ void GAFObject::step()
                 stack->executeFunctionByHandler(m_nScriptHandler, 2);
             }
         }
-        else if (!m_isLooped && m_currentFrame >= m_currentSequenceEnd - 1)
+        else
         {
-            setAnimationRunning(false);
+            setAnimationRunning(false, false);
 
             if (m_animationFinishedPlayDelegate)
-            {
                 m_animationFinishedPlayDelegate(this);
-            }
+            
             if (m_nScriptHandler)
             {
                 cocos2d::LuaStack *stack = cocos2d::LuaEngine::getInstance()->getLuaStack();
@@ -658,92 +654,47 @@ void GAFObject::step()
                 stack->executeFunctionByHandler(m_nScriptHandler, 2);
             }
         }
-
-        processAnimation();
-
-        if (getIsAnimationRunning())
-        {
-            m_showingFrame = m_currentFrame++;
-        }
     }
-    else
+
+    processAnimation();
+
+    m_showingFrame = m_currentFrame;
+    m_currentFrame = nextFrame();
+}
+
+bool GAFObject::isCurrentFrameLastInSequence() const
+{
+    if (m_isReversed)
+        return m_currentFrame == m_currentSequenceStart;
+    return m_currentFrame == m_currentSequenceEnd - 1;
+}
+
+uint32_t GAFObject::nextFrame()
+{
+    if (isCurrentFrameLastInSequence())
     {
-        // If switched to reverse after final frame played
-        if (m_currentFrame >= m_currentSequenceEnd)
-        {
-            m_currentFrame = m_currentSequenceEnd - 1;
-        }
+        if (!m_isLooped)
+            return m_currentFrame;
 
-        if (m_timeline)
-        {
-            const GAFAnimationSequence * seq = m_timeline->getSequenceByFirstFrame(m_currentFrame + 1);
-            if (seq)
-            {
-                if (m_sequenceDelegate)
-                {
-                    m_sequenceDelegate(this, seq->name);
-                }
-                if (m_nScriptHandler)
-                {
-                    cocos2d::LuaStack *stack = cocos2d::LuaEngine::getInstance()->getLuaStack();
-                    stack->pushObject(this, "gaf.GAFObject");
-                    stack->pushInt(EvntType::Sequence);
-                    stack->pushString(seq->name.c_str());
-                    stack->executeFunctionByHandler(m_nScriptHandler, 3);
-                }
-            }
-        }
-
-        if (m_currentFrame < m_currentSequenceStart)
-        {
-            if (m_isLooped)
-            {
-                m_currentFrame = m_currentSequenceEnd - 1;
-
-                if (m_animationStartedNextLoopDelegate)
-                {
-                    m_animationStartedNextLoopDelegate(this);
-                }
-                if (m_nScriptHandler)
-                {
-                    cocos2d::LuaStack *stack = cocos2d::LuaEngine::getInstance()->getLuaStack();
-                    stack->pushObject(this, "gaf.GAFObject");
-                    stack->pushInt(EvntType::AnimationStartedNextLoop);
-                    stack->executeFunctionByHandler(m_nScriptHandler, 2);
-                }
-            }
-            else
-            {
-                setAnimationRunning(false);
-
-                if (m_animationFinishedPlayDelegate)
-                {
-                    m_animationFinishedPlayDelegate(this);
-                }
-                if (m_nScriptHandler)
-                {
-                    cocos2d::LuaStack *stack = cocos2d::LuaEngine::getInstance()->getLuaStack();
-                    stack->pushObject(this, "gaf.GAFObject");
-                    stack->pushInt(EvntType::AnimationFinishedPlay);
-                    stack->executeFunctionByHandler(m_nScriptHandler, 2);
-                }
-
-                return;
-            }
-        }
-
-        processAnimation();
-
-        if (getIsAnimationRunning())
-        {
-            m_showingFrame = m_currentFrame--;
-        }
+        if (m_isReversed)
+            return m_currentSequenceEnd - 1;
+        else
+            return m_currentSequenceStart;
     }
+
+    return m_currentFrame + (m_isReversed ? -1 : 1);
 }
 
 bool GAFObject::hasSequences() const
 {
     return !m_timeline->getAnimationSequences().empty();
+}
+
+const AnimationSequences_t& GAFObject::getSequences() const
+{
+    if (m_timeline)
+        return m_timeline->getAnimationSequences();
+    return s_emptySequences;
 }
 
 static cocos2d::Rect GAFCCRectUnion(const cocos2d::Rect& src1, const cocos2d::Rect& src2)
@@ -822,11 +773,8 @@ cocos2d::Mat4 const& GAFObject::getNodeToParentTransform() const
         return GAFSprite::getNodeToParentTransform();
 }
 
-void GAFObject::rearrangeSubobject(cocos2d::Node* out, cocos2d::Node* child, int zIndex, uint32_t frame, bool visible)
+void GAFObject::rearrangeSubobject(cocos2d::Node* out, cocos2d::Node* child, int zIndex)
 {
-    if (!visible)
-        return;
-
     cocos2d::Node* parent = child->getParent();
     if (parent != out)
     {
@@ -835,10 +783,9 @@ void GAFObject::rearrangeSubobject(cocos2d::Node* out, cocos2d::Node* child, int
     }
     else
     {
-        //static_cast<GAFAnimatedObject*>(child)->_transformUpdated = true;
+        static_cast<GAFObject*>(child)->_transformUpdated = true;
         child->setLocalZOrder(zIndex);
     }
-    *reinterpret_cast<uint32_t*>(child->getUserData()) = (1 + frame);
 }
 
 void GAFObject::realizeFrame(cocos2d::Node* out, uint32_t frameIndex)
@@ -868,12 +815,15 @@ void GAFObject::realizeFrame(cocos2d::Node* out, uint32_t frameIndex)
         }
         subObject->m_isInResetState = state->colorMults()[GAFColorTransformIndex::GAFCTI_A] < 0.f;
 
+        if (!state->isVisible())
+            continue;
+
         if (subObject->m_charType == GAFCharacterType::Timeline)
         {
             if (!subObject->m_isInResetState)
             {
                 cocos2d::AffineTransform stateTransform = state->affineTransform;
-                float csf = m_timeline->usedAtlasContentScaleFactor();
+                float csf = m_timeline->usedAtlasScale();
                 stateTransform.tx *= csf;
                 stateTransform.ty *= csf;
                 cocos2d::AffineTransform t = GAF_CGAffineTransformCocosFormatFromFlashFormat(state->affineTransform);
@@ -892,14 +842,14 @@ void GAFObject::realizeFrame(cocos2d::Node* out, uint32_t frameIndex)
 
                 if (m_masks[state->objectIdRef])
                 {
-                    rearrangeSubobject(out, m_masks[state->objectIdRef], state->zIndex, frameIndex, 1);
+                    rearrangeSubobject(out, m_masks[state->objectIdRef], state->zIndex);
                 }
                 else
                 {
                     //subObject->removeFromParentAndCleanup(false);
                     if (state->maskObjectIdRef == IDNONE)
                     {
-                        rearrangeSubobject(out, subObject, state->zIndex, frameIndex, 1);
+                        rearrangeSubobject(out, subObject, state->zIndex);
                     }
                     else
                     {
@@ -908,19 +858,16 @@ void GAFObject::realizeFrame(cocos2d::Node* out, uint32_t frameIndex)
                         auto mask = m_masks[state->maskObjectIdRef];
                         CCASSERT(mask, "Error. No mask found for this ID");
                         if (mask)
-                            rearrangeSubobject(mask, subObject, state->zIndex, frameIndex, 1);
+                            rearrangeSubobject(mask, subObject, state->zIndex);
                     }
                 }
 
-                if (state->isVisible())
-                {
-                    subObject->step();
-                }
+                subObject->step();
             }
         }
         else if (subObject->m_charType == GAFCharacterType::Texture)
         {
-            cocos2d::Vec2 prevAP = subObject->getAnchorPoint();
+            cocos2d::Vect prevAP = subObject->getAnchorPoint();
             cocos2d::Size  prevCS = subObject->getContentSize();
 
 #if ENABLE_RUNTIME_FILTERS
@@ -969,21 +916,21 @@ void GAFObject::realizeFrame(cocos2d::Node* out, uint32_t frameIndex)
 #endif
 
             cocos2d::Size newCS = subObject->getContentSize();
-            cocos2d::Vec2 newAP = cocos2d::Vec2(((prevAP.x - 0.5f) * prevCS.width) / newCS.width + 0.5f,
+            cocos2d::Vect newAP = cocos2d::Vect(((prevAP.x - 0.5f) * prevCS.width) / newCS.width + 0.5f,
                 ((prevAP.y - 0.5f) * prevCS.height) / newCS.height + 0.5f);
             subObject->setAnchorPoint(newAP);
 
 
             if (m_masks[state->objectIdRef])
             {
-                rearrangeSubobject(out, m_masks[state->objectIdRef], state->zIndex, frameIndex, 1);
+                rearrangeSubobject(out, m_masks[state->objectIdRef], state->zIndex);
             }
             else
             {
                 //subObject->removeFromParentAndCleanup(false);
                 if (state->maskObjectIdRef == IDNONE)
                 {
-                    rearrangeSubobject(out, subObject, state->zIndex, frameIndex, 1);
+                    rearrangeSubobject(out, subObject, state->zIndex);
                 }
                 else
                 {
@@ -992,12 +939,12 @@ void GAFObject::realizeFrame(cocos2d::Node* out, uint32_t frameIndex)
                     auto mask = m_masks[state->maskObjectIdRef];
                     CCASSERT(mask, "Error. No mask found for this ID");
                     if (mask)
-                        rearrangeSubobject(mask, subObject, state->zIndex, frameIndex, 1);
+                        rearrangeSubobject(mask, subObject, state->zIndex);
                 }
             }
 
             cocos2d::AffineTransform stateTransform = state->affineTransform;
-            float csf = m_timeline->usedAtlasContentScaleFactor();
+            float csf = m_timeline->usedAtlasScale();
             stateTransform.tx *= csf;
             stateTransform.ty *= csf;
             cocos2d::AffineTransform t = GAF_CGAffineTransformCocosFormatFromFlashFormat(state->affineTransform);
@@ -1037,9 +984,32 @@ void GAFObject::realizeFrame(cocos2d::Node* out, uint32_t frameIndex)
         else if (subObject->m_charType == GAFCharacterType::TextField)
         {
             GAFTextField *tf = static_cast<GAFTextField*>(subObject);
-            rearrangeSubobject(out, subObject, state->zIndex, frameIndex, 1);
+            rearrangeSubobject(out, subObject, state->zIndex);
+
+            cocos2d::AffineTransform stateTransform = state->affineTransform;
+            float csf = m_timeline->usedAtlasScale();
+            stateTransform.tx *= csf;
+            stateTransform.ty *= csf;
+            cocos2d::AffineTransform t = GAF_CGAffineTransformCocosFormatFromFlashFormat(state->affineTransform);
+
+            if (isFlippedX() || isFlippedY())
+            {
+                float flipMulX = isFlippedX() ? -1 : 1;
+                float flipOffsetX = isFlippedX() ? getContentSize().width - m_asset->getHeader().frameSize.getMinX() : 0;
+                float flipMulY = isFlippedY() ? -1 : 1;
+                float flipOffsetY = isFlippedY() ? -getContentSize().height + m_asset->getHeader().frameSize.getMinY() : 0;
+
+                cocos2d::AffineTransform flipCenterTransform = cocos2d::AffineTransformMake(flipMulX, 0, 0, flipMulY, flipOffsetX, flipOffsetY);
+                t = AffineTransformConcat(t, flipCenterTransform);
+            }
+
+            subObject->setExternalTransform(t);
         }
 
+        if (state->isVisible())
+        {
+            subObject->m_lastVisibleInFrame = frameIndex + 1;
+        }
     }
 
     GAFAnimationFrame::TimelineActions_t timelineActions = currentFrame->getTimelineActions();
@@ -1133,6 +1103,8 @@ GAFObject* GAFObject::getObjectByName(const std::string& name)
 
                 ++begIt;
             }
+
+            return retval;
         }
     }
     return nullptr;

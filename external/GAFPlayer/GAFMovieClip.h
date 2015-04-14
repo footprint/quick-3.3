@@ -29,6 +29,7 @@ protected:
 
     void updateTextureWithEffects();
     virtual uint32_t setUniforms() override;
+
 public:
 
     GAFMovieClip();

@@ -12,14 +12,14 @@ NS_GAF_BEGIN
 
 static float  _desiredCsf = 1.f;
 
-float GAFAsset::desiredCsf()
+float GAFAsset::desiredAtlasScale()
 {
-    return cocos2d::CC_CONTENT_SCALE_FACTOR();
+    return m_desiredAtlasScale;
 }
 
-void GAFAsset::setDesiredCsf(float csf)
+void GAFAsset::setDesiredAtlasScale(float scale)
 {
-    _desiredCsf = csf;
+    m_desiredAtlasScale = scale;
 }
 
 GAFObject * GAFAsset::createObject()
@@ -31,7 +31,7 @@ GAFObject * GAFAsset::createObject()
 
     if (m_rootTimeline == nullptr)
     {
-        CCLOG("%s", "You haven't root timeline in this asset. Please set root timeline by setRootTimelineWithName(...)");
+        CCLOG("%s", "You haven't root timeline in this asset. Please set root timeline by setRootTimeline(...)");
         for (Timelines_t::iterator i = m_timelines.begin(), e = m_timelines.end(); i != e; i++)
         {
             if (!i->second->getLinkageName().empty())
@@ -50,7 +50,7 @@ GAFObject* GAFAsset::createObjectAndRun(bool looped)
     GAFObject* res = createObject();
     if (res)
     {
-        res->setLooped(looped);
+        res->setLooped(looped, true);
         res->start();
     }
     return res;
@@ -61,7 +61,9 @@ m_textureLoadDelegate(nullptr),
 m_sceneFps(60),
 m_sceneWidth(0),
 m_sceneHeight(0),
-m_rootTimeline(nullptr)
+m_rootTimeline(nullptr),
+m_desiredAtlasScale(1.0f),
+m_gafFileName("")
 {
     m_textureManager = new GAFAssetTextureManager();
     GAFShaderManager::Initialize();
@@ -113,6 +115,8 @@ bool GAFAsset::initWithGAFBundle(const std::string& zipFilePath, const std::stri
 {
     GAFLoader* loader = new GAFLoader();
 
+    m_gafFileName = zipFilePath;
+    m_gafFileName.append("/" + entryFile);
     std::string fullfilePath = cocos2d::FileUtils::getInstance()->fullPathForFilename(zipFilePath);
 
     cocos2d::ZipFile bundle(fullfilePath);
@@ -125,6 +129,10 @@ bool GAFAsset::initWithGAFBundle(const std::string& zipFilePath, const std::stri
     {
         isLoaded = loader->loadData(gafData, sz, this);
     }
+    if (isLoaded)
+    {
+        loadTextures(entryFile, delegate, &bundle);
+    }
 
     delete loader;
 
@@ -135,6 +143,7 @@ bool GAFAsset::initWithGAFFile(const std::string& filePath, GAFTextureLoadDelega
 {
     GAFLoader* loader = new GAFLoader();
 
+    m_gafFileName = filePath;
     std::string fullfilePath = cocos2d::FileUtils::getInstance()->fullPathForFilename(filePath);
 
     bool isLoaded = loader->loadFile(fullfilePath, this);
@@ -146,24 +155,29 @@ bool GAFAsset::initWithGAFFile(const std::string& filePath, GAFTextureLoadDelega
     }
     if (isLoaded)
     {
-        for (Timelines_t::iterator i = m_timelines.begin(), e = m_timelines.end(); i != e; i++)
-        {
-            i->second->loadImages();
-
-            if (i->second->getTextureAtlas())
-            {
-                m_textureManager->appendInfoFromTextureAtlas(i->second->getTextureAtlas());
-                //i->second->getTextureAtlas()->loadImages(fullfilePath, m_textureLoadDelegate);
-            }
-        }
-
-        m_textureLoadDelegate = delegate;
-        m_textureManager->loadImages(fullfilePath, m_textureLoadDelegate);
+        loadTextures(fullfilePath, delegate);
     }
 
     delete loader;
 
     return isLoaded;
+}
+
+void GAFAsset::loadTextures(const std::string& filePath, GAFTextureLoadDelegate_t delegate, cocos2d::ZipFile* bundle /*= nullptr*/)
+{
+    for (Timelines_t::iterator i = m_timelines.begin(), e = m_timelines.end(); i != e; i++)
+    {
+        i->second->loadImages(m_desiredAtlasScale);
+
+        if (i->second->getTextureAtlas())
+        {
+            m_textureManager->appendInfoFromTextureAtlas(i->second->getTextureAtlas());
+            //i->second->getTextureAtlas()->loadImages(fullfilePath, m_textureLoadDelegate);
+        }
+    }
+
+    m_textureLoadDelegate = delegate;
+    m_textureManager->loadImages(filePath, m_textureLoadDelegate, bundle);
 }
 
 /*GAFTextureAtlas* GAFAsset::getTextureAtlas()
@@ -173,14 +187,13 @@ return m_currentTextureAtlas;
 
 void GAFAsset::setRootTimeline(GAFTimeline *tl)
 {
-    assert(!m_rootTimeline);
     m_rootTimeline = tl;
     //m_rootTimeline->retain();
     m_header.pivot = tl->getPivot();
     m_header.frameSize = tl->getRect();
 }
 
-void GAFAsset::setRootTimelineWithName(const std::string& name)
+bool GAFAsset::setRootTimeline(const std::string& name)
 {
     for (Timelines_t::iterator i = m_timelines.begin(), e = m_timelines.end(); i != e; i++)
     {
@@ -188,9 +201,21 @@ void GAFAsset::setRootTimelineWithName(const std::string& name)
         if (tl_name.compare(name) == 0)
         {
             setRootTimeline(i->second);
-            break;
+            return true;
         }
     }
+    return false;
+}
+
+bool GAFAsset::setRootTimeline(uint32_t id)
+{
+    Timelines_t::iterator timeline = m_timelines.find(id);
+    if (timeline != m_timelines.end())
+    {
+        setRootTimeline(timeline->second);
+        return true;
+    }
+    return false;
 }
 
 GAFTimeline* GAFAsset::getRootTimeline() const
@@ -283,6 +308,11 @@ void GAFAsset::setSceneHeight(unsigned int value)
 void GAFAsset::setSceneColor(const cocos2d::Color4B& value)
 {
     m_sceneColor = value;
+}
+
+const std::string& GAFAsset::getGAFFileName() const
+{
+    return m_gafFileName;
 }
 
 NS_GAF_END

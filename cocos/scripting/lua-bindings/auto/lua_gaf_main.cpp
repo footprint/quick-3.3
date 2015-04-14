@@ -1,7 +1,7 @@
 #include "lua_gaf_main.hpp"
 #include "lua_gaf.hpp"
 
-int append_gaf_scripts(lua_State* tolua_S)
+TOLUA_API int append_gaf_scripts(lua_State* tolua_S)
 {
     int top = lua_gettop(tolua_S);
     lua_getglobal(tolua_S, "_G");

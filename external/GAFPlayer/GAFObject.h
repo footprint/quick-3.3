@@ -12,7 +12,6 @@ class GAFTimeline;
 
 //events +++footprint
 typedef enum _EvntType {
-    Control,//not supported yet!
     Sequence,
     FramePlayed,
     AnimationFinishedPlay,
@@ -33,8 +32,7 @@ private:
     GAFAnimationFinishedPlayDelegate_t      m_animationFinishedPlayDelegate;
     GAFAnimationStartedNextLoopDelegate_t   m_animationStartedNextLoopDelegate;
     GAFFramePlayedDelegate_t                m_framePlayedDelegate;
-    GAFObjectControlDelegate_t              m_controlDelegate;
-
+    
     cocos2d::Node*                          m_container;
 
     uint32_t                                m_totalFrameCount;
@@ -76,7 +74,6 @@ protected:
     void    processAnimation();
     void    processAnimations(float dt);
 
-    void    setAnimationRunning(bool value);
     void    instantiateObject(const AnimationObjects_t& objs, const AnimationMasks_t& masks);
     
     void    instantiateAnimatedObjects(const AnimationObjects_t &objs, int max);
@@ -84,6 +81,9 @@ protected:
 
     GAFObject*   encloseNewTimeline(uint32_t reference);
 
+    void        step();
+    bool        isCurrentFrameLastInSequence() const;
+    uint32_t    nextFrame();
 
 public:
     GAFObject();
@@ -100,9 +100,6 @@ public:
     /// @note do not forget to call setFramePlayedDelegate(nullptr) before deleting your subscriber
     void setFramePlayedDelegate(GAFFramePlayedDelegate_t delegate);
 
-    /// @note do not forget to call setControlDelegate(nullptr) before deleting your subscriber
-    void setControlDelegate(GAFObjectControlDelegate_t delegate);
-    
 #if COCOS2D_VERSION < 0x00030200
     void visit(cocos2d::Renderer *renderer, const cocos2d::Mat4 &transform, bool flags) override;
 #else
@@ -121,10 +118,8 @@ public:
     }
 public:
     // Playback accessing
-
     void        start();
     void        stop();
-    void        step();
 
     /// Pauses animation including enclosed timelines
     void        pauseAnimation();
@@ -132,14 +127,15 @@ public:
     /// Resumes animation including enclosed timelines
     void        resumeAnimation();
 
+
     bool        isDone() const;
     bool        getIsAnimationRunning() const;
 
     bool        isLooped() const;
-    void        setLooped(bool looped);
+    void        setLooped(bool looped, bool recursive = false);
 
     bool        isReversed() const;
-    void        setReversed(bool reversed);
+    void        setReversed(bool reversed, bool fromCurrentFrame = true);
 
     uint32_t    getTotalFrameCount() const;
     uint32_t    getCurrentFrameIndex() const;
@@ -169,7 +165,7 @@ public:
     /// @param resume if true - animation will be played immediately, if false - playback will be paused after the first frame is shown
     /// @param hint specific animation playback parameters
 
-    bool        playSequence(const std::string& name, bool looped = false, bool resume = true);
+    bool        playSequence(const std::string& name, bool looped, bool resume = true);
 
     /// Stops playing an animation as a sequence
     void        clearSequence();
@@ -178,6 +174,7 @@ public:
     /// @note this function is automatically called in start/stop
     void        enableTick(bool val);
 
+    void        setAnimationRunning(bool value, bool recurcive);
 public:
 
     virtual ~GAFObject();
@@ -192,6 +189,8 @@ public:
 
     cocos2d::Rect getBoundingBoxForCurrentFrame();
 
+    const AnimationSequences_t& getSequences() const;
+
     virtual const cocos2d::Mat4& getNodeToParentTransform() const override;
 
     //////////////////////////////////////////////////////////////////////////
@@ -205,7 +204,7 @@ public:
     const GAFObject* getObjectByName(const std::string& name) const;
 
     void realizeFrame(cocos2d::Node* out, uint32_t frameIndex);
-    void rearrangeSubobject(cocos2d::Node* out, cocos2d::Node* child, int zIndex, uint32_t frame, bool visible);
+    void rearrangeSubobject(cocos2d::Node* out, cocos2d::Node* child, int zIndex);
 
     uint32_t getFps() const;
 

@@ -21,6 +21,9 @@ private:
 	Timelines_t				m_timelines;
     GAFTimeline*            m_rootTimeline;
 
+    void setRootTimeline(GAFTimeline* tl);
+
+    void loadTextures(const std::string& filePath, GAFTextureLoadDelegate_t delegate, cocos2d::ZipFile* bundle = nullptr);
     GAFTextureLoadDelegate_t m_textureLoadDelegate;
 	GAFAssetTextureManager*	m_textureManager;
 
@@ -29,6 +32,9 @@ private:
     unsigned int            m_sceneHeight;
     cocos2d::Color4B        m_sceneColor;
 
+    float                   m_desiredAtlasScale;
+
+    std::string             m_gafFileName;
 private:
     int _majorVersion;
     int _minorVersion;
@@ -44,8 +50,8 @@ public:
     void                        setHeader(GAFHeader& h);
     const GAFHeader&            getHeader() const;
     
-    void                        setRootTimeline(GAFTimeline* tl);
-    void                        setRootTimelineWithName(const std::string& name);
+    bool                        setRootTimeline(const std::string& name);
+    bool                        setRootTimeline(uint32_t id);
     GAFTimeline*                getRootTimeline() const;
     GAFTimeline*                getTimelineByName(const std::string& name) const;
 
@@ -63,16 +69,16 @@ public:
     static bool                 isAssetVersionPlayable(const char * version);
 
     GAFObject*                  createObject();
-    GAFObject*                  createObjectAndRun(bool looped = false);
+    GAFObject*                  createObjectAndRun(bool looped);
 
-    /// desired content scale factor
-    static float                desiredCsf();
-    /// sets desired content scale factor
-    static void                 setDesiredCsf(float csf);
+    /// Desired atlas scale. Default is 1.0f
+    float                       desiredAtlasScale();
+    /// Sets desired atlas scale. Will choose nearest atlas scale from available
+    void                        setDesiredAtlasScale(float scale);
 
     void                        setTextureLoadDelegate(GAFTextureLoadDelegate_t delegate);
     
-	GAFAssetTextureManager* getTextureManager();
+	GAFAssetTextureManager*     getTextureManager();
 
     const unsigned int getSceneFps() const;
     const unsigned int getSceneWidth() const;
@@ -82,6 +88,8 @@ public:
     void setSceneWidth(unsigned int);
     void setSceneHeight(unsigned int);
     void setSceneColor(const cocos2d::Color4B&);
+
+    const std::string&          getGAFFileName() const;
 };
 
 NS_GAF_END

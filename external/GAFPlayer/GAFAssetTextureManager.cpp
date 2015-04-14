@@ -65,7 +65,7 @@ void GAFAssetTextureManager::loadImages(const std::string& dir, GAFTextureLoadDe
 					source = aiSource.source;
 				}
 
-				if (aiSource.csf == GAFAsset::desiredCsf())
+				if (aiSource.csf == cocos2d::CCDirector::getInstance()->getContentScaleFactor())
 				{
 					source = aiSource.source;
 					break;
@@ -77,7 +77,7 @@ void GAFAssetTextureManager::loadImages(const std::string& dir, GAFTextureLoadDe
 
 			if (delegate)
 			{
-				delegate(&path);
+                path = delegate(path);
 			}
 
 			if (!bundle)
