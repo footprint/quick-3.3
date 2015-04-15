@@ -734,11 +734,10 @@ void Updater::Helper::handleQuerySucceed(Message *msg)
         }
         if (manager->_scriptHandler)
         {
-            LuaEngine* pLua = (LuaEngine*)ScriptEngineManager::getInstance()->getScriptEngine();
-            pLua->executeEvent(manager->_scriptHandler,
-                               "querySuccess",
-                               CCString::create(manager->_updateInfoString.c_str()),
-                               "CCString");
+            cocos2d::LuaStack *stack = cocos2d::LuaEngine::getInstance()->getLuaStack();
+            stack->pushString("querySuccess");
+            stack->pushString(manager->_updateInfoString.c_str());
+            stack->executeFunctionByHandler(manager->_scriptHandler, 2);
         }
         CCLOG("Updater::helper::handleQuerySucceed pointer %p handler %u", manager, manager->_scriptHandler);
     }
@@ -759,11 +758,10 @@ void Updater::Helper::handleUpdateSucceed(Message *msg)
         }
         if (manager->_scriptHandler)
         {
-            LuaEngine* pLua = (LuaEngine*)ScriptEngineManager::getInstance()->getScriptEngine();
-            pLua->executeEvent(manager->_scriptHandler,
-                               "success",
-                               CCString::create("success"),
-                               "CCString");
+            cocos2d::LuaStack *stack = cocos2d::LuaEngine::getInstance()->getLuaStack();
+            stack->pushString("success");
+            stack->pushString("success");
+            stack->executeFunctionByHandler(manager->_scriptHandler, 2);
         }
         CCLOG("Updater::helper::handlerUpdateSuccessed pointer %p handler %u", manager, manager->_scriptHandler);
     }
@@ -807,12 +805,10 @@ void Updater::Helper::handlerState(Message *msg)
                 stateMessage = "stateUnknown";
         }
         
-        LuaEngine* pLua = (LuaEngine*)ScriptEngineManager::getInstance()->getScriptEngine();
-        pLua->executeEvent(
-                           stateMsg->manager->_scriptHandler,
-                           "state",
-                           CCString::create(stateMessage.c_str()),
-                           "CCString");
+        cocos2d::LuaStack *stack = cocos2d::LuaEngine::getInstance()->getLuaStack();
+        stack->pushString("state");
+        stack->pushString(stateMessage.c_str());
+        stack->executeFunctionByHandler(stateMsg->manager->_scriptHandler, 2);
     }
     
     delete ((StateMessage*)msg->obj);
@@ -846,13 +842,10 @@ void Updater::Helper::handlerError(Message* msg)
             default:
                 errorMessage = "errorUnknown";
         }
-        LuaEngine* pLua = (LuaEngine*)ScriptEngineManager::getInstance()->getScriptEngine();
-        pLua->executeEvent(
-                           errorMsg->manager->_scriptHandler,
-                           "error",
-                           CCString::create(errorMessage.c_str()),
-                           "CCString"
-                           );
+        cocos2d::LuaStack *stack = cocos2d::LuaEngine::getInstance()->getLuaStack();
+        stack->pushString("error");
+        stack->pushString(errorMessage.c_str());
+        stack->executeFunctionByHandler(errorMsg->manager->_scriptHandler, 2);
     }
     
     delete ((ErrorMessage*)msg->obj);
@@ -870,12 +863,10 @@ void Updater::Helper::handlerProgress(Message* msg)
     {
         //char buff[10];
         //sprintf(buff, "%d", ((ProgressMessage*)msg->obj)->percent);
-        LuaEngine* pLua = (LuaEngine*)ScriptEngineManager::getInstance()->getScriptEngine();
-        pLua->executeEvent(
-                           progMsg->manager->_scriptHandler,
-                           "progress",
-                           CCInteger::create(progMsg->percent),
-                           "CCInteger");
+        cocos2d::LuaStack *stack = cocos2d::LuaEngine::getInstance()->getLuaStack();
+        stack->pushString("progress");
+        stack->pushInt(progMsg->percent);
+        stack->executeFunctionByHandler(progMsg->manager->_scriptHandler, 2);
     }
     
     delete (ProgressMessage*)msg->obj;
