@@ -569,7 +569,7 @@ void Updater::setDelegate(UpdaterDelegateProtocol *delegate)
     _delegate = delegate;
 }
 
-void Updater::registerScriptHandler(int handler)
+void Updater::registerScriptHandler(cocos2d::LUA_FUNCTION handler)
 {
     unregisterScriptHandler();
     _scriptHandler = handler;

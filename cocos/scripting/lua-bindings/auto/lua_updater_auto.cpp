@@ -33,9 +33,10 @@ int lua_updater_Updater_registerScriptHandler(lua_State* tolua_S)
     argc = lua_gettop(tolua_S)-1;
     if (argc == 1)
     {
-        int arg0;
+        cocos2d::LUA_FUNCTION arg0;
         
-        ok &= luaval_to_int32(tolua_S, 2,(int *)&arg0, "cc.Updater:registerScriptHandler");
+        arg0 = toluafix_ref_function(tolua_S,2,0);ok &= arg0 != 0;;
+        
         if(!ok)
         {
             tolua_error(tolua_S,"invalid arguments in function 'lua_updater_Updater_registerScriptHandler'", nullptr);

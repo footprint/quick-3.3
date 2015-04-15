@@ -27,6 +27,7 @@
 #define __Updater__
 
 #include "cocos2d.h"
+#include "CCLuaValue.h"
 #include "extensions/ExtensionMacros.h"
 
 //#if (CC_TARGET_PLATFORM != CC_PLATFORM_WINRT) && (CC_TARGET_PLATFORM != CC_PLATFORM_WP8)
@@ -118,7 +119,7 @@ public:
     
     /** @brief Register script handler, the hander will receive messages
      */
-    void registerScriptHandler(int handler);
+    void registerScriptHandler(cocos2d::LUA_FUNCTION handler);
     void unregisterScriptHandler(void);
     
     /** @brief Sets connection time out in seconds
@@ -199,7 +200,7 @@ private:
     unsigned int _connectionTimeout;
     
     UpdaterDelegateProtocol *_delegate; // weak reference
-    int _scriptHandler; // script handler
+    cocos2d::LUA_FUNCTION _scriptHandler; // script handler
 };
 
 class UpdaterDelegateProtocol
