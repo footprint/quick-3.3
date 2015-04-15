@@ -19,4 +19,6 @@
 #include "assets-manager/Manifest.h"
 #include "ExtensionDeprecated.h"
 
+#include "updater/Updater.h"
+
 #endif /* __COCOS2D_EXT_H__ */

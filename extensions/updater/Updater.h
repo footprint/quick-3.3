@@ -1,7 +1,7 @@
 /****************************************************************************
  Copyright (c) 2013 cocos2d-x.org
  Copyright (c) Microsoft Open Technologies, Inc.
-
+ 
  http://www.cocos2d-x.org
  
  Permission is hereby granted, free of charge, to any person obtaining a copy
@@ -29,7 +29,7 @@
 #include "cocos2d.h"
 #include "extensions/ExtensionMacros.h"
 
-#if (CC_TARGET_PLATFORM != CC_PLATFORM_WINRT) && (CC_TARGET_PLATFORM != CC_PLATFORM_WP8)
+//#if (CC_TARGET_PLATFORM != CC_PLATFORM_WINRT) && (CC_TARGET_PLATFORM != CC_PLATFORM_WP8)
 #include <string>
 #include <pthread.h>
 
@@ -44,10 +44,10 @@ class UpdaterDelegateProtocol;
  *  @js NA
  *  @lua NA
  */
-class CC_DLL Updater : public cocos2d::Ref
+class CC_DLL Updater : public Ref
 {
 public:
-    enum ErrorCode
+    typedef enum _ErrorCode
     {
         // Error caused by creating a file to store downloaded data
         kCreateFile,
@@ -65,9 +65,9 @@ public:
          -- ...
          */
         kUncompress,
-    };
+    }ErrorCode;
     
-    enum StateCode
+    typedef enum _StateCode
     {
         kQueryStart,// 查询更新开始
         kQueryDone,// 查询更新完成
@@ -75,16 +75,16 @@ public:
         kDownDone,
         kUncompressStart,
         kUncompressDone,
-    };
+    }StateCode;
     
-    enum TypeCode
+    typedef enum _TypeCode
     {
         kUpdateUndefined,
         kUpdateZIP,
         kUpdateFiles,
         kUpdateFile,
         kUpdateFileAsync,
-    };
+    }TypeCode;
     
     /* @brief Creates a Updater.
      */
@@ -107,7 +107,7 @@ public:
     /** @brief Download a file and save to filePath.
      */
     void update(const char* fileUrl, const char* filePath);
-
+    
     /** @brief Download a file in async.
      */
     void update(const char* fileUrl);
@@ -120,7 +120,7 @@ public:
      */
     void registerScriptHandler(int handler);
     void unregisterScriptHandler(void);
-
+    
     /** @brief Sets connection time out in seconds
      */
     void setConnectionTimeout(unsigned int timeout);
@@ -169,7 +169,7 @@ private:
         void* obj;
     } Message;
     
-    class Helper : public cocos2d::Ref
+    class Helper : public Ref
     {
     public:
         Helper();
@@ -192,7 +192,7 @@ private:
 private:
     //! The path to store downloaded resources.
     std::string _storagePath;
-
+    
     void *_curl;
     Helper *_schedule;
     pthread_t *_tid;
@@ -206,14 +206,14 @@ class UpdaterDelegateProtocol
 {
 public:
     /* @brief Call back function for error
-       @param errorCode Type of error
+     @param errorCode Type of error
      */
     virtual void onError(Updater::ErrorCode errorCode) {};
     /** @brief Call back function for recording downloading percent
-        @param percent How much percent downloaded
-        @warn This call back function just for recording downloading percent.
-              Updater will do some other thing after downloading, you should
-              write code in onSuccess() after downloading. 
+     @param percent How much percent downloaded
+     @warn This call back function just for recording downloading percent.
+     Updater will do some other thing after downloading, you should
+     write code in onSuccess() after downloading.
      */
     virtual void onProgress(int percent) {};
     /** @brief Call back function for success
@@ -224,5 +224,5 @@ public:
 };
 
 NS_CC_EXT_END;
-#endif // CC_TARGET_PLATFORM != CC_PLATFORM_WINRT
+//#endif // CC_TARGET_PLATFORM != CC_PLATFORM_WINRT
 #endif /* defined(__Updater__) */

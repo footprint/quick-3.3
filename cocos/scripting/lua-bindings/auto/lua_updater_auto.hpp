@@ -12,4 +12,14 @@ extern "C" {
 
 int register_all_updater(lua_State* tolua_S);
 
+
+
+
+
+
+
+
+
+
+
 #endif // __updater_h__

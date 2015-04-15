@@ -25,7 +25,7 @@
 #include "Updater.h"
 #include "cocos2d.h"
 
-#if (CC_TARGET_PLATFORM != CC_PLATFORM_WINRT) && (CC_TARGET_PLATFORM != CC_PLATFORM_WP8)
+//#if (CC_TARGET_PLATFORM != CC_PLATFORM_WINRT) && (CC_TARGET_PLATFORM != CC_PLATFORM_WP8)
 #include <curl/curl.h>
 #include <curl/easy.h>
 
@@ -127,7 +127,7 @@ void Updater::checkUnZIPTmpDir()
 static size_t getUpdateInfoWriteFunc(void *ptr, size_t size, size_t nmemb, void *userdata)
 {
     string *updateInfo = (string*)userdata;
-	CCLOG("getUpdateInfoWriteFunc %s", updateInfo->c_str());
+    CCLOG("getUpdateInfoWriteFunc %s", updateInfo->c_str());
     updateInfo->append((char*)ptr, size * nmemb);
     
     return (size * nmemb);
@@ -267,12 +267,12 @@ void Updater::update(const char* zipUrl, const char* zipFile, const char* unzipT
     pthread_create(&(*_tid), NULL, updateThreadFunc, this);
 }
 
-void Updater::update(cocos2d::__Array *list)
+void Updater::update(__Array *list)
 {
     return;
     if(!isAvailable()) return;
     _updateType = kUpdateFiles;
-
+    
     _tid = new pthread_t();
     pthread_create(&(*_tid), NULL, updateThreadFunc, this);
 }
@@ -367,22 +367,22 @@ bool Updater::uncompress(const char* zipFilePath, const char* unzipTmpDir, bool 
         const size_t filenameLength = strlen(fileName);
         if (fileName[filenameLength-1] == '/')
         {
-			// get all dir
-			string fileNameStr = string(fileName);
-			size_t position = 0;
-			while((position=fileNameStr.find_first_of("/",position))!=string::npos)
-			{
-				string dirPath =unzipTmpDir + fileNameStr.substr(0, position);
-				// Entry is a direcotry, so create it.
-				// If the directory exists, it will failed scilently.
-				if (!createDirectory(dirPath.c_str()))
-				{
-						CCLOG("Can not create directory %s", dirPath.c_str());
-						//unzClose(zipfile);
-						//return false;
-				}
-				position++;
-			}
+            // get all dir
+            string fileNameStr = string(fileName);
+            size_t position = 0;
+            while((position=fileNameStr.find_first_of("/",position))!=string::npos)
+            {
+                string dirPath =unzipTmpDir + fileNameStr.substr(0, position);
+                // Entry is a direcotry, so create it.
+                // If the directory exists, it will failed scilently.
+                if (!createDirectory(dirPath.c_str()))
+                {
+                    CCLOG("Can not create directory %s", dirPath.c_str());
+                    //unzClose(zipfile);
+                    //return false;
+                }
+                position++;
+            }
         }
         else
         {
@@ -486,16 +486,16 @@ bool Updater::createDirectory(const char *path)
     return true;
 #else
     BOOL ret = CreateDirectoryA(path, NULL);
-	if (!ret && ERROR_ALREADY_EXISTS != GetLastError())
-	{
-		return false;
-	}
+    if (!ret && ERROR_ALREADY_EXISTS != GetLastError())
+    {
+        return false;
+    }
     return true;
 #endif
 }
 
 int downloadProgressFunc(void *ptr, double totalToDownload, double nowDownloaded,
-                              double totalToUpLoad, double nowUpLoaded)
+                         double totalToUpLoad, double nowUpLoaded)
 {
     static int count = 0;
     if (((count++)%10) != 0) return 0;
@@ -505,10 +505,10 @@ int downloadProgressFunc(void *ptr, double totalToDownload, double nowDownloaded
     msg->what = UPDATER_MESSAGE_PROGRESS;
     
     ProgressMessage *progressData = new ProgressMessage();
-
+    
     progressData->percent = totalToDownload > 0 ?
-        (int)(nowDownloaded/totalToDownload*100) :
-        0;
+    (int)(nowDownloaded/totalToDownload*100) :
+    0;
     progressData->manager = manager;
     msg->obj = progressData;
     
@@ -824,7 +824,7 @@ void Updater::Helper::handlerError(Message* msg)
     if (errorMsg->manager->_delegate)
     {
         errorMsg->manager->_delegate
-            ->onError(errorMsg->code);
+        ->onError(errorMsg->code);
     }
     if (errorMsg->manager->_scriptHandler)
     {
@@ -864,7 +864,7 @@ void Updater::Helper::handlerProgress(Message* msg)
     if (progMsg->manager->_delegate)
     {
         progMsg->manager->_delegate
-            ->onProgress(progMsg->percent);
+        ->onProgress(progMsg->percent);
     }
     if (progMsg->manager->_scriptHandler)
     {
@@ -872,14 +872,14 @@ void Updater::Helper::handlerProgress(Message* msg)
         //sprintf(buff, "%d", ((ProgressMessage*)msg->obj)->percent);
         LuaEngine* pLua = (LuaEngine*)ScriptEngineManager::getInstance()->getScriptEngine();
         pLua->executeEvent(
-                       progMsg->manager->_scriptHandler,
-                       "progress",
-                       CCInteger::create(progMsg->percent),
-                       "CCInteger");
+                           progMsg->manager->_scriptHandler,
+                           "progress",
+                           CCInteger::create(progMsg->percent),
+                           "CCInteger");
     }
     
     delete (ProgressMessage*)msg->obj;
 }
 
 NS_CC_EXT_END;
-#endif // CC_PLATFORM_WINRT
+//#endif // CC_PLATFORM_WINRT
