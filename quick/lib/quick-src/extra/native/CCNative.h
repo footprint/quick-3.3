@@ -59,6 +59,9 @@ public:
 #pragma mark helper
     
     static const std::string getDeviceName(void);
+    static const std::string getAppVersion(void);
+    static const std::string getCountryCode(void);
+    static const std::string getLanguageCode(void);
     static void vibrate();
     
 #if CC_TARGET_PLATFORM == CC_PLATFORM_IOS

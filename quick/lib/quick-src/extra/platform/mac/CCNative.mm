@@ -113,6 +113,32 @@ const string Native::getDeviceName(void)
     return string("");
 }
 
+const string Native::getAppVersion()
+{
+    NSString* version = [[[NSBundle mainBundle] infoDictionary] objectForKey:@"CFBundleVersion"];
+    return [version UTF8String];
+}
+
+const string Native::getCountryCode()
+{
+    NSLocale* currentLocale = [NSLocale currentLocale];
+    NSString* countryCode = [currentLocale objectForKey:NSLocaleCountryCode];
+    return [countryCode UTF8String];
+}
+
+const string Native::getLanguageCode()
+{
+    // get the current language and country config
+    NSUserDefaults *defaults = [NSUserDefaults standardUserDefaults];
+    NSArray *languages = [defaults objectForKey:@"AppleLanguages"];
+    NSString *currentLanguage = [languages objectAtIndex:0];
+    
+    // get the current language code.(such as English is "en", Chinese is "zh" and so on)
+    NSDictionary* temp = [NSLocale componentsFromLocaleIdentifier:currentLanguage];
+    
+    return [[temp objectForKey:NSLocaleLanguageCode] UTF8String];
+}
+
 void Native::vibrate()
 {
     log("Native::vibrate() not support on this platform.");

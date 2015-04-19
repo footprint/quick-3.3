@@ -1,11 +1,16 @@
 package org.cocos2dx.utils;
 
 import java.util.Vector;
+import java.util.Locale;
 
 import org.cocos2dx.lib.Cocos2dxActivity;
 
 import android.content.Context;
 import android.content.Intent;
+import android.content.pm.PackageInfo;
+import android.content.pm.PackageManager;
+import android.content.pm.PackageManager.NameNotFoundException;
+
 import android.graphics.drawable.Drawable;
 import android.net.Uri;
 import android.net.wifi.WifiInfo;
@@ -212,6 +217,27 @@ public class PSNative {
 	public static String getDeviceName() {
 		return Build.USER;
 	}
+
+    public static String getAppVersion() {
+        PackageManager mngr = mContext.getPackageManager();
+		String version = null;
+		try {
+			version = mngr.getPackageInfo(mContext.getPackageName(), 0).versionName;
+		} catch (NameNotFoundException e) {
+			// TODO Auto-generated catch block
+			version = "1.0.0";
+			e.printStackTrace();
+		}
+		return version;
+    }
+
+    public static String getCountryCode() {
+        return Locale.getDefault().getCountry();
+    }
+
+    public static String getLanguageCode() {
+        return Locale.getDefault().getLanguage();
+    }
 
 	public static void vibrate(long time) {
 		if (mVibrator == null) {
