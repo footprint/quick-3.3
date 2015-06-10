@@ -208,6 +208,11 @@ class FilesPacker
            # else
             {
                 #$moduleName = substr(substr($path, $this->config['srcpathLength']), 0, -4);
+                if($this->config['pattern'] != null && !preg_match($this->config['pattern'], $path))
+                {
+                    #echo $path;
+                    continue;
+                }
                 $moduleName = substr($path, $this->config['srcpathLength']);
                 $moduleName = str_replace('.', SPLIT_CHAR, $moduleName);
                 $tempFilePath = $this->config['srcpath'] . DS . $moduleName . '.tmp';

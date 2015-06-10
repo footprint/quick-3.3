@@ -16,6 +16,7 @@ $options = array(
     #array('ex',  'extname',    1,      'pb',       'encrypted file extension name (default is "lua"), only valid for xxtea_chunk'),
     array('c',   'config',     1,      null,        'load options from config file'),
     array('q',   'quiet',      0,      false,       'quiet'),
+    array('pt',  'pattern',    1,        null,      'regexp pattern'),
 );
 
 function errorhelp()

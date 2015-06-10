@@ -32,6 +32,8 @@ THE SOFTWARE.
 #include "base/CCData.h"
 #include "base/ccConfig.h" // CC_USE_JPEG, CC_USE_TIFF, CC_USE_WEBP
 
+#include "extra/apptools/HelperFunc.h"
+
 extern "C"
 {
     // To resolve link error when building 32bits with Xcode 6.
@@ -503,7 +505,8 @@ bool Image::initWithImageFile(const std::string& path)
 
     SDL_FreeSurface(iSurf);
 #else
-    Data data = FileUtils::getInstance()->getDataFromFile(_filePath);
+//    Data data = FileUtils::getInstance()->getDataFromFile(_filePath);
+    Data data = HelperFunc::getData(_filePath);
 
     if (!data.isNull())
     {
@@ -519,7 +522,8 @@ bool Image::initWithImageFileThreadSafe(const std::string& fullpath)
     bool ret = false;
     _filePath = fullpath;
 
-    Data data = FileUtils::getInstance()->getDataFromFile(fullpath);
+//    Data data = FileUtils::getInstance()->getDataFromFile(fullpath);
+    Data data = HelperFunc::getData(_filePath);
 
     if (!data.isNull())
     {
