@@ -26,6 +26,9 @@ extern "C" {
 //pbc
 #include "pbc/pbc-lua.h"
 
+//rc4
+#include "rc4/rc4-lua.h"
+
 static luaL_Reg luax_exts[] = {
     {"cjson", luaopen_cjson_safe},
     {"zlib", luaopen_zlib},
@@ -52,7 +55,8 @@ void luaopen_lua_extensions_more(lua_State *L)
     }
     lua_pop(L, 2);
     
-    luaopen_protobuf_c(L);
+    luaopen_rc4_c(L); //rc4
+    luaopen_protobuf_c(L); //pbc
 }
 
 #if __cplusplus

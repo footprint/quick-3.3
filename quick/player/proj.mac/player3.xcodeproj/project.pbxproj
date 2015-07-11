@@ -7,6 +7,8 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		043BE3091B51036A00FE7B2B /* rc4-lua.c in Sources */ = {isa = PBXBuildFile; fileRef = 043BE3051B51036A00FE7B2B /* rc4-lua.c */; };
+		043BE30A1B51036A00FE7B2B /* rc4.c in Sources */ = {isa = PBXBuildFile; fileRef = 043BE3071B51036A00FE7B2B /* rc4.c */; };
 		045CF0931A4C683100A4A952 /* alloc.c in Sources */ = {isa = PBXBuildFile; fileRef = 045CF0791A4C683100A4A952 /* alloc.c */; };
 		045CF0941A4C683100A4A952 /* array.c in Sources */ = {isa = PBXBuildFile; fileRef = 045CF07B1A4C683100A4A952 /* array.c */; };
 		045CF0951A4C683100A4A952 /* bootstrap.c in Sources */ = {isa = PBXBuildFile; fileRef = 045CF07D1A4C683100A4A952 /* bootstrap.c */; };
@@ -170,6 +172,10 @@
 /* End PBXContainerItemProxy section */
 
 /* Begin PBXFileReference section */
+		043BE3051B51036A00FE7B2B /* rc4-lua.c */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.c; path = "rc4-lua.c"; sourceTree = "<group>"; };
+		043BE3061B51036A00FE7B2B /* rc4-lua.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "rc4-lua.h"; sourceTree = "<group>"; };
+		043BE3071B51036A00FE7B2B /* rc4.c */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.c; path = rc4.c; sourceTree = "<group>"; };
+		043BE3081B51036A00FE7B2B /* rc4.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = rc4.h; sourceTree = "<group>"; };
 		045CF0791A4C683100A4A952 /* alloc.c */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.c; path = alloc.c; sourceTree = "<group>"; };
 		045CF07A1A4C683100A4A952 /* alloc.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = alloc.h; sourceTree = "<group>"; };
 		045CF07B1A4C683100A4A952 /* array.c */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.c; path = array.c; sourceTree = "<group>"; };
@@ -481,6 +487,17 @@
 /* End PBXFrameworksBuildPhase section */
 
 /* Begin PBXGroup section */
+		043BE3041B51036A00FE7B2B /* rc4 */ = {
+			isa = PBXGroup;
+			children = (
+				043BE3051B51036A00FE7B2B /* rc4-lua.c */,
+				043BE3061B51036A00FE7B2B /* rc4-lua.h */,
+				043BE3071B51036A00FE7B2B /* rc4.c */,
+				043BE3081B51036A00FE7B2B /* rc4.h */,
+			);
+			path = rc4;
+			sourceTree = "<group>";
+		};
 		045CF0781A4C683100A4A952 /* pbc */ = {
 			isa = PBXGroup;
 			children = (
@@ -863,6 +880,7 @@
 			isa = PBXGroup;
 			children = (
 				9F7288F71A24957700EE0234 /* Android.mk */,
+				043BE3041B51036A00FE7B2B /* rc4 */,
 				045CF0781A4C683100A4A952 /* pbc */,
 				9F7288F81A24957700EE0234 /* cjson */,
 				9F7289031A24957700EE0234 /* filesystem */,
@@ -1211,6 +1229,7 @@
 				9F72893B1A24957700EE0234 /* CCMaskFilter.cpp in Sources */,
 				9F7289921A24957700EE0234 /* lua_extensions_more.c in Sources */,
 				9F7289781A24957700EE0234 /* CCNetworkIOSMac.mm in Sources */,
+				043BE30A1B51036A00FE7B2B /* rc4.c in Sources */,
 				9FD0193219F8C4D4005E0C49 /* PlayerServiceProtocol.cpp in Sources */,
 				9FD0192E19F8C4D4005E0C49 /* PlayerLuaCore.cpp in Sources */,
 				C00FD4951938512100C6382D /* PlayDisable_png.cpp in Sources */,
@@ -1270,6 +1289,7 @@
 				9F72897C1A24957700EE0234 /* CCNativeMac.mm in Sources */,
 				9F7289411A24957700EE0234 /* CCFilteredSprite.cpp in Sources */,
 				9FD01B2719F8C6A3005E0C49 /* PlayerMac.mm in Sources */,
+				043BE3091B51036A00FE7B2B /* rc4-lua.c in Sources */,
 				9F7289401A24957700EE0234 /* CCTestFilter.cpp in Sources */,
 				9F7289591A24957700EE0234 /* FilterShaders.cpp in Sources */,
 				9F7289671A24957700EE0234 /* CCNetwork.cpp in Sources */,
