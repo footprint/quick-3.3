@@ -497,22 +497,22 @@ bool Updater::createDirectory(const char *path)
 int downloadProgressFunc(void *ptr, double totalToDownload, double nowDownloaded,
                          double totalToUpLoad, double nowUpLoaded)
 {
-    static int count = 0;
-    if (((count++)%10) != 0) return 0;
-    
-    Updater* manager = (Updater*)ptr;
-    Updater::Message *msg = new Updater::Message();
-    msg->what = UPDATER_MESSAGE_PROGRESS;
-    
-    ProgressMessage *progressData = new ProgressMessage();
-    
-    progressData->percent = totalToDownload > 0 ?
-    (int)(nowDownloaded/totalToDownload*100) :
-    0;
-    progressData->manager = manager;
-    msg->obj = progressData;
-    
-    manager->_schedule->sendMessage(msg);
+    static int lastPercent = 0;
+    int percent = totalToDownload > 0 ? (int)(nowDownloaded/totalToDownload*100) : 0;
+    if (percent != lastPercent)
+    {
+        lastPercent = percent;
+        Updater* manager = (Updater*)ptr;
+        Updater::Message *msg = new Updater::Message();
+        msg->what = UPDATER_MESSAGE_PROGRESS;
+        
+        ProgressMessage *progressData = new ProgressMessage();
+        progressData->percent = percent;
+        progressData->manager = manager;
+        msg->obj = progressData;
+        
+        manager->_schedule->sendMessage(msg);
+    }
     
     return 0;
 }
@@ -734,7 +734,9 @@ void Updater::Helper::handleQuerySucceed(Message *msg)
         }
         if (manager->_scriptHandler)
         {
-            cocos2d::LuaStack *stack = cocos2d::LuaEngine::getInstance()->getLuaStack();
+            LuaEngine* pLua = (LuaEngine*)ScriptEngineManager::getInstance()->getScriptEngine();
+            cocos2d::LuaStack *stack = pLua->getLuaStack();
+            stack->clean();
             stack->pushString("querySuccess");
             stack->pushString(manager->_updateInfoString.c_str());
             stack->executeFunctionByHandler(manager->_scriptHandler, 2);
@@ -758,7 +760,9 @@ void Updater::Helper::handleUpdateSucceed(Message *msg)
         }
         if (manager->_scriptHandler)
         {
-            cocos2d::LuaStack *stack = cocos2d::LuaEngine::getInstance()->getLuaStack();
+            LuaEngine* pLua = (LuaEngine*)ScriptEngineManager::getInstance()->getScriptEngine();
+            cocos2d::LuaStack *stack = pLua->getLuaStack();
+            stack->clean();
             stack->pushString("success");
             stack->pushString("success");
             stack->executeFunctionByHandler(manager->_scriptHandler, 2);
@@ -805,7 +809,9 @@ void Updater::Helper::handlerState(Message *msg)
                 stateMessage = "stateUnknown";
         }
         
-        cocos2d::LuaStack *stack = cocos2d::LuaEngine::getInstance()->getLuaStack();
+        LuaEngine* pLua = (LuaEngine*)ScriptEngineManager::getInstance()->getScriptEngine();
+        cocos2d::LuaStack *stack = pLua->getLuaStack();
+        stack->clean();
         stack->pushString("state");
         stack->pushString(stateMessage.c_str());
         stack->executeFunctionByHandler(stateMsg->manager->_scriptHandler, 2);
@@ -842,7 +848,9 @@ void Updater::Helper::handlerError(Message* msg)
             default:
                 errorMessage = "errorUnknown";
         }
-        cocos2d::LuaStack *stack = cocos2d::LuaEngine::getInstance()->getLuaStack();
+        LuaEngine* pLua = (LuaEngine*)ScriptEngineManager::getInstance()->getScriptEngine();
+        cocos2d::LuaStack *stack = pLua->getLuaStack();
+        stack->clean();
         stack->pushString("error");
         stack->pushString(errorMessage.c_str());
         stack->executeFunctionByHandler(errorMsg->manager->_scriptHandler, 2);
@@ -863,7 +871,9 @@ void Updater::Helper::handlerProgress(Message* msg)
     {
         //char buff[10];
         //sprintf(buff, "%d", ((ProgressMessage*)msg->obj)->percent);
-        cocos2d::LuaStack *stack = cocos2d::LuaEngine::getInstance()->getLuaStack();
+        LuaEngine* pLua = (LuaEngine*)ScriptEngineManager::getInstance()->getScriptEngine();
+        cocos2d::LuaStack *stack = pLua->getLuaStack();
+        stack->clean();
         stack->pushString("progress");
         stack->pushInt(progMsg->percent);
         stack->executeFunctionByHandler(progMsg->manager->_scriptHandler, 2);
