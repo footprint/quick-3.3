@@ -5,6 +5,8 @@
 #include "native/CCNative.h"
 #import "platform/mac/openudid/OpenUDIDMac.h"
 
+#import "ReachabilityIOSMac.h"
+
 NS_CC_EXTRA_BEGIN
 
 #pragma mark -
@@ -94,6 +96,28 @@ const string Native::getInputText(const char* title, const char* message, const 
 const string Native::getOpenUDID(void)
 {
     return string([[OpenUDIDMac value] cStringUsingEncoding:NSUTF8StringEncoding]);
+}
+
+int Native::getNetworkStatus(void)
+{
+    ReachabilityIOSMac *reachability = [ReachabilityIOSMac reachabilityForInternetConnection];
+    [reachability startNotifier];
+    
+    NetworkStatus status = [reachability currentReachabilityStatus];
+    
+    if(status == NotReachable)
+    {
+        return 0;
+    }
+    else if (status == ReachableViaWiFi)
+    {
+        return 2;
+    }
+    else if (status == ReachableViaWWAN)
+    {
+        return 1;
+    }
+    return 0;
 }
 
 const string Native::getDeviceName(void)

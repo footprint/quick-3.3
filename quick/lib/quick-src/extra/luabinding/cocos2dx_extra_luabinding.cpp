@@ -625,6 +625,34 @@ static int tolua_cocos2dx_extra_luabinding_Native_getDeviceName00(lua_State* tol
 }
 #endif //#ifndef TOLUA_DISABLE
 
+/* method: getNetworkStatus of class  Native */
+#ifndef TOLUA_DISABLE_tolua_cocos2dx_extra_luabinding_Native_getNetworkStatus00
+static int tolua_cocos2dx_extra_luabinding_Native_getNetworkStatus00(lua_State* tolua_S)
+{
+#if COCOS2D_DEBUG >= 1
+    tolua_Error tolua_err;
+    if (
+        !tolua_isusertable(tolua_S,1,"Native",0,&tolua_err) ||
+        !tolua_isnoobj(tolua_S,2,&tolua_err)
+        )
+        goto tolua_lerror;
+    else
+#endif
+    {
+        {
+            int tolua_ret = Native::getNetworkStatus();
+            tolua_pushnumber(tolua_S,(lua_Number)tolua_ret);
+        }
+    }
+    return 1;
+#if COCOS2D_DEBUG >= 1
+tolua_lerror:
+    tolua_error(tolua_S,"#ferror in function 'getNetworkStatus'.",&tolua_err);
+    return 0;
+#endif
+}
+#endif //#ifndef TOLUA_DISABLE
+
 /* method: getAppVersion of class  Native */
 #ifndef TOLUA_DISABLE_tolua_cocos2dx_extra_luabinding_Native_getAppVersion00
 static int tolua_cocos2dx_extra_luabinding_Native_getAppVersion00(lua_State* tolua_S)
@@ -708,7 +736,6 @@ tolua_lerror:
 #endif
 }
 #endif //#ifndef TOLUA_DISABLE
-
 
 /* method: vibrate of class  Native */
 #ifndef TOLUA_DISABLE_tolua_cocos2dx_extra_luabinding_Native_vibrate00
@@ -1674,7 +1701,8 @@ TOLUA_API int tolua_cocos2dx_extra_luabinding_open (lua_State* tolua_S)
    tolua_function(tolua_S,"openURL",tolua_cocos2dx_extra_luabinding_Native_openURL00);
    tolua_function(tolua_S,"getInputText",tolua_cocos2dx_extra_luabinding_Native_getInputText00);
    tolua_function(tolua_S,"getDeviceName",tolua_cocos2dx_extra_luabinding_Native_getDeviceName00);
-    tolua_function(tolua_S,"getAppVersion",tolua_cocos2dx_extra_luabinding_Native_getAppVersion00);
+    tolua_function(tolua_S,"getNetworkStatus",tolua_cocos2dx_extra_luabinding_Native_getNetworkStatus00);
+   tolua_function(tolua_S,"getAppVersion",tolua_cocos2dx_extra_luabinding_Native_getAppVersion00);
     tolua_function(tolua_S,"getCountryCode",tolua_cocos2dx_extra_luabinding_Native_getCountryCode00);
     tolua_function(tolua_S,"getLanguageCode",tolua_cocos2dx_extra_luabinding_Native_getLanguageCode00);
    tolua_function(tolua_S,"vibrate",tolua_cocos2dx_extra_luabinding_Native_vibrate00);
