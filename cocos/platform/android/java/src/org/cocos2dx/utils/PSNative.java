@@ -19,6 +19,9 @@ import android.os.Build;
 import android.os.Vibrator;
 import android.telephony.TelephonyManager;
 
+import android.net.ConnectivityManager;
+import android.net.NetworkInfo;
+
 public class PSNative {
 	static Cocos2dxActivity mContext = null;
 	static TelephonyManager mTelephonyManager = null;
@@ -212,6 +215,21 @@ public class PSNative {
 			id = "";
 		}
 		return id;
+	}
+
+	public static int getNetworkStatus() {
+		ConnectivityManager connManager = (ConnectivityManager)getSystemService(Context.CONNECTIVITY_SERVICE);
+	    NetworkInfo mWifi = connManager.getNetworkInfo(ConnectivityManager.TYPE_WIFI);
+
+	    if (mWifi.isConnected()) {
+	    	return 2;
+	    }
+	    
+	    NetworkInfo mMobile = connManager.getNetworkInfo(ConnectivityManager.TYPE_MOBILE);
+	    if (mMobile.isConnected()) {
+	    	return 1;
+	    }
+	    return 0;
 	}
 
 	public static String getDeviceName() {
