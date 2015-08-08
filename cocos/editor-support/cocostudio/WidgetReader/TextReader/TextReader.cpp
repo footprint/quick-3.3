@@ -335,12 +335,12 @@ namespace cocostudio
             {
                 label->setFontName(path);
             }
-            else
-            {
-                auto alert = Label::create();
-                alert->setString(__String::createWithFormat("%s missed", errorFilePath.c_str())->getCString());
-                label->addChild(alert);
-            }
+//            else
+//            {
+//                auto alert = Label::create();
+//                alert->setString(__String::createWithFormat("%s missed", errorFilePath.c_str())->getCString());
+//                label->addChild(alert);
+//            }
         }
         
         auto widgetReader = WidgetReader::getInstance();

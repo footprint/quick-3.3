@@ -196,12 +196,12 @@ namespace cocostudio
             default:
                 break;
         }
-        if (!fileExist)
-        {
-            auto label = Label::create();
-            label->setString(__String::createWithFormat("%s missed", errorFilePath.c_str())->getCString());
-            sprite->addChild(label);
-        }
+//        if (!fileExist)
+//        {
+//            auto label = Label::create();
+//            label->setString(__String::createWithFormat("%s missed", errorFilePath.c_str())->getCString());
+//            sprite->addChild(label);
+//        }
         
         
         auto nodeReader = NodeReader::getInstance();

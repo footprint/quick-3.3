@@ -22,6 +22,8 @@ import android.telephony.TelephonyManager;
 import android.net.ConnectivityManager;
 import android.net.NetworkInfo;
 
+import android.util.Log;
+
 public class PSNative {
 	static Cocos2dxActivity mContext = null;
 	static TelephonyManager mTelephonyManager = null;
@@ -218,7 +220,7 @@ public class PSNative {
 	}
 
 	public static int getNetworkStatus() {
-		ConnectivityManager connManager = (ConnectivityManager)getSystemService(Context.CONNECTIVITY_SERVICE);
+		ConnectivityManager connManager = (ConnectivityManager)mContext.getSystemService(Context.CONNECTIVITY_SERVICE);
 	    NetworkInfo mWifi = connManager.getNetworkInfo(ConnectivityManager.TYPE_WIFI);
 
 	    if (mWifi.isConnected()) {
@@ -229,7 +231,7 @@ public class PSNative {
 	    if (mMobile.isConnected()) {
 	    	return 1;
 	    }
-	    return 0;
+	    return 2;
 	}
 
 	public static String getDeviceName() {
@@ -237,6 +239,7 @@ public class PSNative {
 	}
 
     public static String getAppVersion() {
+    	Log.i("cocos2d-x", "getAppVersion ===1");
         PackageManager mngr = mContext.getPackageManager();
 		String version = null;
 		try {
