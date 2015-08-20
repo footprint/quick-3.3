@@ -12,6 +12,9 @@ public:
     static void luaopen_luaoc(lua_State *L);
     
 protected:
+#if CC_TARGET_PLATFORM == CC_PLATFORM_IOS || CC_TARGET_PLATFORM == CC_PLATFORM_MAC
+    static void* lua_table_to_dict(lua_State *L);
+#endif
     static int callObjcStaticMethod(lua_State *L);
     
     static void pushValue(lua_State *L, void *val);
