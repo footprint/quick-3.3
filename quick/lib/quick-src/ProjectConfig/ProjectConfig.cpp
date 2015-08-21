@@ -265,7 +265,8 @@ bool ProjectConfig::isWriteDebugLogToFile() const
 
 void ProjectConfig::setWriteDebugLogToFile(bool writeDebugLogToFile)
 {
-    _writeDebugLogToFile = writeDebugLogToFile;
+//    _writeDebugLogToFile = writeDebugLogToFile;
+    _writeDebugLogToFile = true; //写死
 }
 
 string ProjectConfig::getDebugLogFilePath() const
