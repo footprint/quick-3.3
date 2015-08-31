@@ -31,6 +31,7 @@ extern "C" {
 #include "tolua++.h"
 #include "lualib.h"
 #include "lauxlib.h"
+#include "snapshot.h"
 }
 
 #include "Cocos2dxLuaLoader.h"
@@ -203,6 +204,9 @@ bool LuaStack::init(void)
     register_all_cocos2dx_physics(_state);
     register_all_cocos2dx_physics_manual(_state);
 #endif
+    
+    // register CCLuaStackSnapshot
+    luaopen_snapshot(_state);
     
     register_all_dragonbones(_state);
     

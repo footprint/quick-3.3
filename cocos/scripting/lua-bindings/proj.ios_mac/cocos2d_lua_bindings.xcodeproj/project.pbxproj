@@ -9,6 +9,9 @@
 /* Begin PBXBuildFile section */
 		045CF0A51A4C6C3000A4A952 /* lua_dragonbones_auto.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 045CF0A31A4C6C3000A4A952 /* lua_dragonbones_auto.cpp */; };
 		045CF0A61A4C6C3000A4A952 /* lua_dragonbones_auto.hpp in Headers */ = {isa = PBXBuildFile; fileRef = 045CF0A41A4C6C3000A4A952 /* lua_dragonbones_auto.hpp */; };
+		0480738C1B946093008D3BF1 /* snapshot.h in Headers */ = {isa = PBXBuildFile; fileRef = 0480738B1B946093008D3BF1 /* snapshot.h */; };
+		0480738E1B9460CA008D3BF1 /* snapshot.c in Sources */ = {isa = PBXBuildFile; fileRef = 0480738D1B9460CA008D3BF1 /* snapshot.c */; };
+		0480738F1B9460CA008D3BF1 /* snapshot.c in Sources */ = {isa = PBXBuildFile; fileRef = 0480738D1B9460CA008D3BF1 /* snapshot.c */; };
 		04C8E7E21A6617A40008DF70 /* lua_gaf_main.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 04C8E7DC1A6617A40008DF70 /* lua_gaf_main.cpp */; };
 		04C8E7E31A6617A40008DF70 /* lua_gaf_main.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 04C8E7DC1A6617A40008DF70 /* lua_gaf_main.cpp */; };
 		04C8E7E41A6617A40008DF70 /* lua_gaf_main.hpp in Headers */ = {isa = PBXBuildFile; fileRef = 04C8E7DD1A6617A40008DF70 /* lua_gaf_main.hpp */; };
@@ -400,6 +403,8 @@
 /* Begin PBXFileReference section */
 		045CF0A31A4C6C3000A4A952 /* lua_dragonbones_auto.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = lua_dragonbones_auto.cpp; sourceTree = "<group>"; };
 		045CF0A41A4C6C3000A4A952 /* lua_dragonbones_auto.hpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.h; path = lua_dragonbones_auto.hpp; sourceTree = "<group>"; };
+		0480738B1B946093008D3BF1 /* snapshot.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = snapshot.h; sourceTree = "<group>"; };
+		0480738D1B9460CA008D3BF1 /* snapshot.c */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.c; path = snapshot.c; sourceTree = "<group>"; };
 		04C8E7DC1A6617A40008DF70 /* lua_gaf_main.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = lua_gaf_main.cpp; sourceTree = "<group>"; };
 		04C8E7DD1A6617A40008DF70 /* lua_gaf_main.hpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.h; path = lua_gaf_main.hpp; sourceTree = "<group>"; };
 		04C8E7DE1A6617A40008DF70 /* lua_gaf.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = lua_gaf.cpp; sourceTree = "<group>"; };
@@ -824,6 +829,8 @@
 				1AACE78618BC45C200215002 /* platform */,
 				1A262AB718BEEF5900D2DB92 /* tolua_fix.cpp */,
 				1AACE7B418BC45C200215002 /* tolua_fix.h */,
+				0480738B1B946093008D3BF1 /* snapshot.h */,
+				0480738D1B9460CA008D3BF1 /* snapshot.c */,
 			);
 			name = manual;
 			path = ../manual;
@@ -1168,6 +1175,7 @@
 				15EFA62D198B3220000C57D3 /* lua_cocos2dx_experimental_manual.hpp in Headers */,
 				F4FE0D6D19ECD02400B8B12B /* LuaEventNode.h in Headers */,
 				15EFA62E198B3220000C57D3 /* lua_cocos2dx_manual.hpp in Headers */,
+				0480738C1B946093008D3BF1 /* snapshot.h in Headers */,
 				F4FE0D7119ECD02400B8B12B /* LuaNodeManager.h in Headers */,
 				F4FE0D6919ECD02400B8B12B /* lua_cocos2dx_quick_manual.hpp in Headers */,
 				04C8E7E51A6617A40008DF70 /* lua_gaf_main.hpp in Headers */,
@@ -1286,6 +1294,7 @@
 				DA1769F71A1B1351006F5EA8 /* lua_cocos2dx_csloader_auto.cpp in Sources */,
 				15AC69DC1987710400D17520 /* tolua_push.c in Sources */,
 				15AC69DD1987710400D17520 /* tolua_to.c in Sources */,
+				0480738E1B9460CA008D3BF1 /* snapshot.c in Sources */,
 				15415AAD19A71A53004F1E71 /* except.c in Sources */,
 				15415ABD19A71A53004F1E71 /* mime.c in Sources */,
 				15C1C2E519874C9200A46ACC /* CCLuaObjcBridge.mm in Sources */,
@@ -1413,6 +1422,7 @@
 				DAC1A7BF1A3AF952003BE8E0 /* linit.c in Sources */,
 				15EFA639198B328B000C57D3 /* tolua_fix.cpp in Sources */,
 				DAC1A7BB1A3AF952003BE8E0 /* lfunc.c in Sources */,
+				0480738F1B9460CA008D3BF1 /* snapshot.c in Sources */,
 				155C7DFF19A71C5C00F08B25 /* CCBProxy.cpp in Sources */,
 				155C7DF019A71C1E00F08B25 /* lua_cocos2dx_spine_auto.cpp in Sources */,
 				155C7E0719A71C7800F08B25 /* lua_cocos2dx_extension_manual.cpp in Sources */,
