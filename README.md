@@ -54,3 +54,4 @@ quick-cocos2d-x 中带有一个名为 player 的工具。
 -    [quick 中的触摸事件](docs/manual/touch-events/zh.md)
 -    [API 文档](docs/api/index.html)
 
+# quick-3.3
