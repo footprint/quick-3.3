@@ -34145,11 +34145,11 @@ int lua_cocos2dx_GLProgramState_setUniformTexture(lua_State* tolua_S)
         if (argc == 2) {
             std::string arg0;
             ok &= luaval_to_std_string(tolua_S, 2,&arg0, "cc.GLProgramState:setUniformTexture");
-
+            
             if (!ok) { break; }
-            unsigned int arg1;
-            ok &= luaval_to_uint32(tolua_S, 3,&arg1, "cc.GLProgramState:setUniformTexture");
-
+            cocos2d::Texture2D* arg1;
+            ok &= luaval_to_object<cocos2d::Texture2D>(tolua_S, 3, "cc.Texture2D",&arg1);
+            
             if (!ok) { break; }
             cobj->setUniformTexture(arg0, arg1);
             return 0;
@@ -34162,8 +34162,8 @@ int lua_cocos2dx_GLProgramState_setUniformTexture(lua_State* tolua_S)
             ok &= luaval_to_std_string(tolua_S, 2,&arg0, "cc.GLProgramState:setUniformTexture");
 
             if (!ok) { break; }
-            cocos2d::Texture2D* arg1;
-            ok &= luaval_to_object<cocos2d::Texture2D>(tolua_S, 3, "cc.Texture2D",&arg1);
+            unsigned int arg1;
+            ok &= luaval_to_uint32(tolua_S, 3,&arg1, "cc.GLProgramState:setUniformTexture");
 
             if (!ok) { break; }
             cobj->setUniformTexture(arg0, arg1);
