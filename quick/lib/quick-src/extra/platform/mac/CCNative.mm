@@ -163,6 +163,21 @@ const string Native::getLanguageCode()
     return [[temp objectForKey:NSLocaleLanguageCode] UTF8String];
 }
 
+void Native::setClipboardText(const char* text)
+{
+    UIPasteboard *pasteboard = [UIPasteboard generalPasteboard];
+    pasteboard.string = [NSString stringWithUTF8String:text];
+}
+
+const std::string Native::getClipboardText(void)
+{
+    UIPasteboard *pasteboard = [UIPasteboard generalPasteboard];
+    if (pasteboard.string) {
+        return [pasteboard.string UTF8String];
+    }
+    return "";
+}
+
 void Native::vibrate()
 {
     log("Native::vibrate() not support on this platform.");

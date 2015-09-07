@@ -62,6 +62,10 @@ public:
     static const std::string getAppVersion(void);
     static const std::string getCountryCode(void);
     static const std::string getLanguageCode(void);
+    //clipboard
+    static void setClipboardText(const char* text);
+    static const std::string getClipboardText(void);
+    
     
     static void vibrate();
     
