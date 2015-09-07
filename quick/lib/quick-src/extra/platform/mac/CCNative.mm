@@ -165,16 +165,27 @@ const string Native::getLanguageCode()
 
 void Native::setClipboardText(const char* text)
 {
-    UIPasteboard *pasteboard = [UIPasteboard generalPasteboard];
-    pasteboard.string = [NSString stringWithUTF8String:text];
+    NSPasteboard *pasteboard = [NSPasteboard generalPasteboard];
+    [pasteboard clearContents];
+    NSString *textObj = [NSString stringWithUTF8String:text];
+    NSArray *objectsToCopy = [NSArray arrayWithObject:textObj];
+    
+    [pasteboard writeObjects:objectsToCopy];
 }
 
 const std::string Native::getClipboardText(void)
 {
-    UIPasteboard *pasteboard = [UIPasteboard generalPasteboard];
-    if (pasteboard.string) {
-        return [pasteboard.string UTF8String];
+    NSPasteboard *pasteboard = [NSPasteboard generalPasteboard];
+    NSDictionary *options = [NSDictionary dictionary];
+    NSArray *classes = [[NSArray alloc] initWithObjects:[NSString class], nil];
+    NSArray *strings = [pasteboard readObjectsForClasses:classes options:options];
+    if (strings != nil) {
+        NSString *text = [strings objectAtIndex:0];
+        if (text) {
+            return [text UTF8String];
+        }
     }
+
     return "";
 }
 

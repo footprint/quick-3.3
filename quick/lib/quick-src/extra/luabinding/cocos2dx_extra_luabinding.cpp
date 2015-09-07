@@ -737,6 +737,63 @@ tolua_lerror:
 }
 #endif //#ifndef TOLUA_DISABLE
 
+/* method: setClipboardText of class  Native */
+#ifndef TOLUA_DISABLE_tolua_cocos2dx_extra_luabinding_Native_setClipboardText00
+static int tolua_cocos2dx_extra_luabinding_Native_setClipboardText00(lua_State* tolua_S)
+{
+#if COCOS2D_DEBUG >= 1
+    tolua_Error tolua_err;
+    if (
+        !tolua_isusertable(tolua_S,1,"Native",0,&tolua_err) ||
+        !tolua_isstring(tolua_S,2,0,&tolua_err) ||
+        !tolua_isnoobj(tolua_S,3,&tolua_err)
+        )
+        goto tolua_lerror;
+    else
+#endif
+    {
+        const char* text = ((const char*)  tolua_tostring(tolua_S,2,0));
+        {
+            Native::setClipboardText(text);
+        }
+    }
+    return 0;
+#if COCOS2D_DEBUG >= 1
+tolua_lerror:
+    tolua_error(tolua_S,"#ferror in function 'setClipboardText'.",&tolua_err);
+    return 0;
+#endif
+}
+#endif //#ifndef TOLUA_DISABLE
+
+/* method: getClipboardText of class  Native */
+#ifndef TOLUA_DISABLE_tolua_cocos2dx_extra_luabinding_Native_getClipboardText00
+static int tolua_cocos2dx_extra_luabinding_Native_getClipboardText00(lua_State* tolua_S)
+{
+#if COCOS2D_DEBUG >= 1
+    tolua_Error tolua_err;
+    if (
+        !tolua_isusertable(tolua_S,1,"Native",0,&tolua_err) ||
+        !tolua_isnoobj(tolua_S,2,&tolua_err)
+        )
+        goto tolua_lerror;
+    else
+#endif
+    {
+        {
+            const string tolua_ret = (const string)  Native::getClipboardText();
+            tolua_pushcppstring(tolua_S,(const char*)tolua_ret);
+        }
+    }
+    return 1;
+#if COCOS2D_DEBUG >= 1
+tolua_lerror:
+    tolua_error(tolua_S,"#ferror in function 'getClipboardText'.",&tolua_err);
+    return 0;
+#endif
+}
+#endif //#ifndef TOLUA_DISABLE
+
 /* method: vibrate of class  Native */
 #ifndef TOLUA_DISABLE_tolua_cocos2dx_extra_luabinding_Native_vibrate00
 static int tolua_cocos2dx_extra_luabinding_Native_vibrate00(lua_State* tolua_S)
@@ -1705,6 +1762,8 @@ TOLUA_API int tolua_cocos2dx_extra_luabinding_open (lua_State* tolua_S)
    tolua_function(tolua_S,"getAppVersion",tolua_cocos2dx_extra_luabinding_Native_getAppVersion00);
     tolua_function(tolua_S,"getCountryCode",tolua_cocos2dx_extra_luabinding_Native_getCountryCode00);
     tolua_function(tolua_S,"getLanguageCode",tolua_cocos2dx_extra_luabinding_Native_getLanguageCode00);
+    tolua_function(tolua_S,"setClipboardText",tolua_cocos2dx_extra_luabinding_Native_setClipboardText00);
+    tolua_function(tolua_S,"getClipboardText",tolua_cocos2dx_extra_luabinding_Native_getClipboardText00);
    tolua_function(tolua_S,"vibrate",tolua_cocos2dx_extra_luabinding_Native_vibrate00);
   tolua_endmodule(tolua_S);
   tolua_constant(tolua_S,"kCCHTTPRequestMethodGET",kCCHTTPRequestMethodGET);
