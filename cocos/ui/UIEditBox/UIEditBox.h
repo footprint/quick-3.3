@@ -279,6 +279,11 @@ namespace ui {
              */
             int  getScriptEditBoxHandler(void){ return _scriptEditBoxHandler ;}
             
+            //footprint++:增加键盘数据接口
+            float getIMEKeyboardDuration() {return _info.duration;}
+            cocos2d::Rect getIMEKeyboardRectBegin() {return _info.begin;}
+            cocos2d::Rect getIMEKeyboardRectEnd() {return _info.end;}
+
 #endif // #if CC_ENABLE_SCRIPT_BINDING
             
             /**
@@ -470,6 +475,7 @@ namespace ui {
             float _adjustHeight;
 #if CC_ENABLE_SCRIPT_BINDING
             int   _scriptEditBoxHandler;
+            IMEKeyboardNotificationInfo _info;
 #endif
         };
 }

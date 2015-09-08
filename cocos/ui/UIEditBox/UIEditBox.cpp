@@ -446,6 +446,8 @@ static Rect getRect(Node * pNode)
 
 void EditBox::keyboardWillShow(IMEKeyboardNotificationInfo& info)
 {
+    _info = info; //footprint++
+    
     // CCLOG("CCEditBox::keyboardWillShow");
     Rect rectTracked = getRect(this);
 	// some adjustment for margin between the keyboard and the edit box.
@@ -466,6 +468,15 @@ void EditBox::keyboardWillShow(IMEKeyboardNotificationInfo& info)
     {
         _editBoxImpl->doAnimationWhenKeyboardMove(info.duration, _adjustHeight);
     }
+    
+#if CC_ENABLE_SCRIPT_BINDING
+    if (0 != _scriptEditBoxHandler)
+    {
+        cocos2d::CommonScriptData data(_scriptEditBoxHandler, "keyboardWillShow", this);
+        cocos2d::ScriptEvent event(cocos2d::kCommonEvent,(void*)&data);
+        cocos2d::ScriptEngineManager::getInstance()->getScriptEngine()->sendEvent(&event);
+    }
+#endif
 }
 
 void EditBox::keyboardDidShow(IMEKeyboardNotificationInfo& info)
@@ -475,11 +486,22 @@ void EditBox::keyboardDidShow(IMEKeyboardNotificationInfo& info)
 
 void EditBox::keyboardWillHide(IMEKeyboardNotificationInfo& info)
 {
+    _info = info; //footprint++
+    
     // CCLOG("CCEditBox::keyboardWillHide");
     if (_editBoxImpl != nullptr)
     {
         _editBoxImpl->doAnimationWhenKeyboardMove(info.duration, -_adjustHeight);
     }
+    
+#if CC_ENABLE_SCRIPT_BINDING
+    if (0 != _scriptEditBoxHandler)
+    {
+        cocos2d::CommonScriptData data(_scriptEditBoxHandler, "keyboardWillHide", this);
+        cocos2d::ScriptEvent event(cocos2d::kCommonEvent,(void*)&data);
+        cocos2d::ScriptEngineManager::getInstance()->getScriptEngine()->sendEvent(&event);
+    }
+#endif
 }
 
 void EditBox::keyboardDidHide(IMEKeyboardNotificationInfo& info)

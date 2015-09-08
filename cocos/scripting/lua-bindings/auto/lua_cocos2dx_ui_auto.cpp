@@ -22086,7 +22086,7 @@ int lua_cocos2dx_ui_EditBox_keyboardDidShow(lua_State* tolua_S)
 
     return 0;
 }
-int lua_cocos2dx_ui_EditBox_getScriptEditBoxHandler(lua_State* tolua_S)
+int lua_cocos2dx_ui_EditBox_setFontSize(lua_State* tolua_S)
 {
     int argc = 0;
     cocos2d::ui::EditBox* cobj = nullptr;
@@ -22106,29 +22106,31 @@ int lua_cocos2dx_ui_EditBox_getScriptEditBoxHandler(lua_State* tolua_S)
 #if COCOS2D_DEBUG >= 1
     if (!cobj) 
     {
-        tolua_error(tolua_S,"invalid 'cobj' in function 'lua_cocos2dx_ui_EditBox_getScriptEditBoxHandler'", nullptr);
+        tolua_error(tolua_S,"invalid 'cobj' in function 'lua_cocos2dx_ui_EditBox_setFontSize'", nullptr);
         return 0;
     }
 #endif
 
     argc = lua_gettop(tolua_S)-1;
-    if (argc == 0) 
+    if (argc == 1) 
     {
+        int arg0;
+
+        ok &= luaval_to_int32(tolua_S, 2,(int *)&arg0, "ccui.EditBox:setFontSize");
         if(!ok)
         {
-            tolua_error(tolua_S,"invalid arguments in function 'lua_cocos2dx_ui_EditBox_getScriptEditBoxHandler'", nullptr);
+            tolua_error(tolua_S,"invalid arguments in function 'lua_cocos2dx_ui_EditBox_setFontSize'", nullptr);
             return 0;
         }
-        int ret = cobj->getScriptEditBoxHandler();
-        tolua_pushnumber(tolua_S,(lua_Number)ret);
-        return 1;
+        cobj->setFontSize(arg0);
+        return 0;
     }
-    luaL_error(tolua_S, "%s has wrong number of arguments: %d, was expecting %d \n", "ccui.EditBox:getScriptEditBoxHandler",argc, 0);
+    luaL_error(tolua_S, "%s has wrong number of arguments: %d, was expecting %d \n", "ccui.EditBox:setFontSize",argc, 1);
     return 0;
 
 #if COCOS2D_DEBUG >= 1
     tolua_lerror:
-    tolua_error(tolua_S,"#ferror in function 'lua_cocos2dx_ui_EditBox_getScriptEditBoxHandler'.",&tolua_err);
+    tolua_error(tolua_S,"#ferror in function 'lua_cocos2dx_ui_EditBox_setFontSize'.",&tolua_err);
 #endif
 
     return 0;
@@ -22226,6 +22228,53 @@ int lua_cocos2dx_ui_EditBox_keyboardDidHide(lua_State* tolua_S)
 #if COCOS2D_DEBUG >= 1
     tolua_lerror:
     tolua_error(tolua_S,"#ferror in function 'lua_cocos2dx_ui_EditBox_keyboardDidHide'.",&tolua_err);
+#endif
+
+    return 0;
+}
+int lua_cocos2dx_ui_EditBox_getIMEKeyboardRectBegin(lua_State* tolua_S)
+{
+    int argc = 0;
+    cocos2d::ui::EditBox* cobj = nullptr;
+    bool ok  = true;
+
+#if COCOS2D_DEBUG >= 1
+    tolua_Error tolua_err;
+#endif
+
+
+#if COCOS2D_DEBUG >= 1
+    if (!tolua_isusertype(tolua_S,1,"ccui.EditBox",0,&tolua_err)) goto tolua_lerror;
+#endif
+
+    cobj = (cocos2d::ui::EditBox*)tolua_tousertype(tolua_S,1,0);
+
+#if COCOS2D_DEBUG >= 1
+    if (!cobj) 
+    {
+        tolua_error(tolua_S,"invalid 'cobj' in function 'lua_cocos2dx_ui_EditBox_getIMEKeyboardRectBegin'", nullptr);
+        return 0;
+    }
+#endif
+
+    argc = lua_gettop(tolua_S)-1;
+    if (argc == 0) 
+    {
+        if(!ok)
+        {
+            tolua_error(tolua_S,"invalid arguments in function 'lua_cocos2dx_ui_EditBox_getIMEKeyboardRectBegin'", nullptr);
+            return 0;
+        }
+        cocos2d::Rect ret = cobj->getIMEKeyboardRectBegin();
+        rect_to_luaval(tolua_S, ret);
+        return 1;
+    }
+    luaL_error(tolua_S, "%s has wrong number of arguments: %d, was expecting %d \n", "ccui.EditBox:getIMEKeyboardRectBegin",argc, 0);
+    return 0;
+
+#if COCOS2D_DEBUG >= 1
+    tolua_lerror:
+    tolua_error(tolua_S,"#ferror in function 'lua_cocos2dx_ui_EditBox_getIMEKeyboardRectBegin'.",&tolua_err);
 #endif
 
     return 0;
@@ -22371,6 +22420,53 @@ int lua_cocos2dx_ui_EditBox_setFontName(lua_State* tolua_S)
 #if COCOS2D_DEBUG >= 1
     tolua_lerror:
     tolua_error(tolua_S,"#ferror in function 'lua_cocos2dx_ui_EditBox_setFontName'.",&tolua_err);
+#endif
+
+    return 0;
+}
+int lua_cocos2dx_ui_EditBox_getIMEKeyboardDuration(lua_State* tolua_S)
+{
+    int argc = 0;
+    cocos2d::ui::EditBox* cobj = nullptr;
+    bool ok  = true;
+
+#if COCOS2D_DEBUG >= 1
+    tolua_Error tolua_err;
+#endif
+
+
+#if COCOS2D_DEBUG >= 1
+    if (!tolua_isusertype(tolua_S,1,"ccui.EditBox",0,&tolua_err)) goto tolua_lerror;
+#endif
+
+    cobj = (cocos2d::ui::EditBox*)tolua_tousertype(tolua_S,1,0);
+
+#if COCOS2D_DEBUG >= 1
+    if (!cobj) 
+    {
+        tolua_error(tolua_S,"invalid 'cobj' in function 'lua_cocos2dx_ui_EditBox_getIMEKeyboardDuration'", nullptr);
+        return 0;
+    }
+#endif
+
+    argc = lua_gettop(tolua_S)-1;
+    if (argc == 0) 
+    {
+        if(!ok)
+        {
+            tolua_error(tolua_S,"invalid arguments in function 'lua_cocos2dx_ui_EditBox_getIMEKeyboardDuration'", nullptr);
+            return 0;
+        }
+        double ret = cobj->getIMEKeyboardDuration();
+        tolua_pushnumber(tolua_S,(lua_Number)ret);
+        return 1;
+    }
+    luaL_error(tolua_S, "%s has wrong number of arguments: %d, was expecting %d \n", "ccui.EditBox:getIMEKeyboardDuration",argc, 0);
+    return 0;
+
+#if COCOS2D_DEBUG >= 1
+    tolua_lerror:
+    tolua_error(tolua_S,"#ferror in function 'lua_cocos2dx_ui_EditBox_getIMEKeyboardDuration'.",&tolua_err);
 #endif
 
     return 0;
@@ -22870,7 +22966,7 @@ int lua_cocos2dx_ui_EditBox_setPlaceholderFont(lua_State* tolua_S)
 
     return 0;
 }
-int lua_cocos2dx_ui_EditBox_setFontSize(lua_State* tolua_S)
+int lua_cocos2dx_ui_EditBox_getScriptEditBoxHandler(lua_State* tolua_S)
 {
     int argc = 0;
     cocos2d::ui::EditBox* cobj = nullptr;
@@ -22890,31 +22986,29 @@ int lua_cocos2dx_ui_EditBox_setFontSize(lua_State* tolua_S)
 #if COCOS2D_DEBUG >= 1
     if (!cobj) 
     {
-        tolua_error(tolua_S,"invalid 'cobj' in function 'lua_cocos2dx_ui_EditBox_setFontSize'", nullptr);
+        tolua_error(tolua_S,"invalid 'cobj' in function 'lua_cocos2dx_ui_EditBox_getScriptEditBoxHandler'", nullptr);
         return 0;
     }
 #endif
 
     argc = lua_gettop(tolua_S)-1;
-    if (argc == 1) 
+    if (argc == 0) 
     {
-        int arg0;
-
-        ok &= luaval_to_int32(tolua_S, 2,(int *)&arg0, "ccui.EditBox:setFontSize");
         if(!ok)
         {
-            tolua_error(tolua_S,"invalid arguments in function 'lua_cocos2dx_ui_EditBox_setFontSize'", nullptr);
+            tolua_error(tolua_S,"invalid arguments in function 'lua_cocos2dx_ui_EditBox_getScriptEditBoxHandler'", nullptr);
             return 0;
         }
-        cobj->setFontSize(arg0);
-        return 0;
+        int ret = cobj->getScriptEditBoxHandler();
+        tolua_pushnumber(tolua_S,(lua_Number)ret);
+        return 1;
     }
-    luaL_error(tolua_S, "%s has wrong number of arguments: %d, was expecting %d \n", "ccui.EditBox:setFontSize",argc, 1);
+    luaL_error(tolua_S, "%s has wrong number of arguments: %d, was expecting %d \n", "ccui.EditBox:getScriptEditBoxHandler",argc, 0);
     return 0;
 
 #if COCOS2D_DEBUG >= 1
     tolua_lerror:
-    tolua_error(tolua_S,"#ferror in function 'lua_cocos2dx_ui_EditBox_setFontSize'.",&tolua_err);
+    tolua_error(tolua_S,"#ferror in function 'lua_cocos2dx_ui_EditBox_getScriptEditBoxHandler'.",&tolua_err);
 #endif
 
     return 0;
@@ -23192,6 +23286,53 @@ int lua_cocos2dx_ui_EditBox_getMaxLength(lua_State* tolua_S)
 #if COCOS2D_DEBUG >= 1
     tolua_lerror:
     tolua_error(tolua_S,"#ferror in function 'lua_cocos2dx_ui_EditBox_getMaxLength'.",&tolua_err);
+#endif
+
+    return 0;
+}
+int lua_cocos2dx_ui_EditBox_getIMEKeyboardRectEnd(lua_State* tolua_S)
+{
+    int argc = 0;
+    cocos2d::ui::EditBox* cobj = nullptr;
+    bool ok  = true;
+
+#if COCOS2D_DEBUG >= 1
+    tolua_Error tolua_err;
+#endif
+
+
+#if COCOS2D_DEBUG >= 1
+    if (!tolua_isusertype(tolua_S,1,"ccui.EditBox",0,&tolua_err)) goto tolua_lerror;
+#endif
+
+    cobj = (cocos2d::ui::EditBox*)tolua_tousertype(tolua_S,1,0);
+
+#if COCOS2D_DEBUG >= 1
+    if (!cobj) 
+    {
+        tolua_error(tolua_S,"invalid 'cobj' in function 'lua_cocos2dx_ui_EditBox_getIMEKeyboardRectEnd'", nullptr);
+        return 0;
+    }
+#endif
+
+    argc = lua_gettop(tolua_S)-1;
+    if (argc == 0) 
+    {
+        if(!ok)
+        {
+            tolua_error(tolua_S,"invalid arguments in function 'lua_cocos2dx_ui_EditBox_getIMEKeyboardRectEnd'", nullptr);
+            return 0;
+        }
+        cocos2d::Rect ret = cobj->getIMEKeyboardRectEnd();
+        rect_to_luaval(tolua_S, ret);
+        return 1;
+    }
+    luaL_error(tolua_S, "%s has wrong number of arguments: %d, was expecting %d \n", "ccui.EditBox:getIMEKeyboardRectEnd",argc, 0);
+    return 0;
+
+#if COCOS2D_DEBUG >= 1
+    tolua_lerror:
+    tolua_error(tolua_S,"#ferror in function 'lua_cocos2dx_ui_EditBox_getIMEKeyboardRectEnd'.",&tolua_err);
 #endif
 
     return 0;
@@ -23511,12 +23652,14 @@ int lua_register_cocos2dx_ui_EditBox(lua_State* tolua_S)
     tolua_beginmodule(tolua_S,"EditBox");
         tolua_function(tolua_S,"new",lua_cocos2dx_ui_EditBox_constructor);
         tolua_function(tolua_S,"keyboardDidShow",lua_cocos2dx_ui_EditBox_keyboardDidShow);
-        tolua_function(tolua_S,"getScriptEditBoxHandler",lua_cocos2dx_ui_EditBox_getScriptEditBoxHandler);
+        tolua_function(tolua_S,"setFontSize",lua_cocos2dx_ui_EditBox_setFontSize);
         tolua_function(tolua_S,"getText",lua_cocos2dx_ui_EditBox_getText);
         tolua_function(tolua_S,"keyboardDidHide",lua_cocos2dx_ui_EditBox_keyboardDidHide);
+        tolua_function(tolua_S,"getIMEKeyboardRectBegin",lua_cocos2dx_ui_EditBox_getIMEKeyboardRectBegin);
         tolua_function(tolua_S,"setPlaceholderFontName",lua_cocos2dx_ui_EditBox_setPlaceholderFontName);
         tolua_function(tolua_S,"getPlaceHolder",lua_cocos2dx_ui_EditBox_getPlaceHolder);
         tolua_function(tolua_S,"setFontName",lua_cocos2dx_ui_EditBox_setFontName);
+        tolua_function(tolua_S,"getIMEKeyboardDuration",lua_cocos2dx_ui_EditBox_getIMEKeyboardDuration);
         tolua_function(tolua_S,"registerScriptEditBoxHandler",lua_cocos2dx_ui_EditBox_registerScriptEditBoxHandler);
         tolua_function(tolua_S,"setPlaceholderFontSize",lua_cocos2dx_ui_EditBox_setPlaceholderFontSize);
         tolua_function(tolua_S,"setInputMode",lua_cocos2dx_ui_EditBox_setInputMode);
@@ -23527,12 +23670,13 @@ int lua_register_cocos2dx_ui_EditBox(lua_State* tolua_S)
         tolua_function(tolua_S,"keyboardWillHide",lua_cocos2dx_ui_EditBox_keyboardWillHide);
         tolua_function(tolua_S,"touchDownAction",lua_cocos2dx_ui_EditBox_touchDownAction);
         tolua_function(tolua_S,"setPlaceholderFont",lua_cocos2dx_ui_EditBox_setPlaceholderFont);
-        tolua_function(tolua_S,"setFontSize",lua_cocos2dx_ui_EditBox_setFontSize);
+        tolua_function(tolua_S,"getScriptEditBoxHandler",lua_cocos2dx_ui_EditBox_getScriptEditBoxHandler);
         tolua_function(tolua_S,"initWithSizeAndBackgroundSprite",lua_cocos2dx_ui_EditBox_initWithSizeAndBackgroundSprite);
         tolua_function(tolua_S,"setPlaceHolder",lua_cocos2dx_ui_EditBox_setPlaceHolder);
         tolua_function(tolua_S,"setReturnType",lua_cocos2dx_ui_EditBox_setReturnType);
         tolua_function(tolua_S,"setInputFlag",lua_cocos2dx_ui_EditBox_setInputFlag);
         tolua_function(tolua_S,"getMaxLength",lua_cocos2dx_ui_EditBox_getMaxLength);
+        tolua_function(tolua_S,"getIMEKeyboardRectEnd",lua_cocos2dx_ui_EditBox_getIMEKeyboardRectEnd);
         tolua_function(tolua_S,"setText",lua_cocos2dx_ui_EditBox_setText);
         tolua_function(tolua_S,"setMaxLength",lua_cocos2dx_ui_EditBox_setMaxLength);
         tolua_function(tolua_S,"setFont",lua_cocos2dx_ui_EditBox_setFont);

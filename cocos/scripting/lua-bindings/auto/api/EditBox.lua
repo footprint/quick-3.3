@@ -12,12 +12,11 @@
 -- @param #cc.IMEKeyboardNotificationInfo info
         
 --------------------------------
--- get a script Handler<br>
--- js NA<br>
--- lua NA
--- @function [parent=#EditBox] getScriptEditBoxHandler 
+-- Set the font size.<br>
+-- param fontSize The font size.
+-- @function [parent=#EditBox] setFontSize 
 -- @param self
--- @return int#int ret (return value: int)
+-- @param #int fontSize
         
 --------------------------------
 -- Get the text entered in the edit box.<br>
@@ -32,6 +31,12 @@
 -- @function [parent=#EditBox] keyboardDidHide 
 -- @param self
 -- @param #cc.IMEKeyboardNotificationInfo info
+        
+--------------------------------
+-- 
+-- @function [parent=#EditBox] getIMEKeyboardRectBegin 
+-- @param self
+-- @return rect_table#rect_table ret (return value: rect_table)
         
 --------------------------------
 -- Set the placeholder's font name.<br>
@@ -53,6 +58,12 @@
 -- @function [parent=#EditBox] setFontName 
 -- @param self
 -- @param #char pFontName
+        
+--------------------------------
+-- 
+-- @function [parent=#EditBox] getIMEKeyboardDuration 
+-- @param self
+-- @return float#float ret (return value: float)
         
 --------------------------------
 -- Registers a script function that will be called for EditBox events.<br>
@@ -145,11 +156,12 @@
 -- @param #int fontSize
         
 --------------------------------
--- Set the font size.<br>
--- param fontSize The font size.
--- @function [parent=#EditBox] setFontSize 
+-- get a script Handler<br>
+-- js NA<br>
+-- lua NA
+-- @function [parent=#EditBox] getScriptEditBoxHandler 
 -- @param self
--- @param #int fontSize
+-- @return int#int ret (return value: int)
         
 --------------------------------
 -- @overload self, size_table, ccui.Scale9Sprite         
@@ -189,6 +201,12 @@
 -- @function [parent=#EditBox] getMaxLength 
 -- @param self
 -- @return int#int ret (return value: int)
+        
+--------------------------------
+-- 
+-- @function [parent=#EditBox] getIMEKeyboardRectEnd 
+-- @param self
+-- @return rect_table#rect_table ret (return value: rect_table)
         
 --------------------------------
 -- Set the text entered in the edit box.<br>
