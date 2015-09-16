@@ -286,6 +286,10 @@ namespace ui {
 
 #endif // #if CC_ENABLE_SCRIPT_BINDING
             
+            //footprint++:增加键盘打开和关闭接口
+            void openKeyboard();
+            void closeKeyboard();
+            
             /**
              * Set the text entered in the edit box.
              * @param pText The given text.

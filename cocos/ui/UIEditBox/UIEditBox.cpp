@@ -176,6 +176,22 @@ EditBoxDelegate* EditBox::getDelegate()
 {
     return _delegate;
 }
+    
+void EditBox::openKeyboard()
+{
+    if (_editBoxImpl != nullptr)
+    {
+        _editBoxImpl->openKeyboard();
+    }
+}
+
+void EditBox::closeKeyboard()
+{
+    if (_editBoxImpl != nullptr)
+    {
+        _editBoxImpl->closeKeyboard();
+    }
+}
 
 void EditBox::setText(const char* pText)
 {
