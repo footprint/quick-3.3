@@ -106,6 +106,8 @@ void Text::initRenderer()
 {
     _labelRenderer = Label::create();
     addProtectedChild(_labelRenderer, LABEL_RENDERER_Z, -1);
+    //footprint++: 默认开启阴影效果
+    enableShadow(Color4B::BLACK, Size(1,-1));
 }
 
     
