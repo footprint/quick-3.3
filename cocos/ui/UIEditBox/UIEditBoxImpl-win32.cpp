@@ -745,10 +745,11 @@ void EditBoxImplWin::openKeyboard()
         strncpy(data.eventName,"ended",sizeof(data.eventName));
         event.data = (void*)&data;
         ScriptEngineManager::getInstance()->getScriptEngine()->sendEvent(&event);
-        memset(data.eventName,0,sizeof(data.eventName));
-        strncpy(data.eventName,"return",sizeof(data.eventName));
-        event.data = (void*)&data;
-        ScriptEngineManager::getInstance()->getScriptEngine()->sendEvent(&event);
+        //footprint:去掉return事件
+//        memset(data.eventName,0,sizeof(data.eventName));
+//        strncpy(data.eventName,"return",sizeof(data.eventName));
+//        event.data = (void*)&data;
+//        ScriptEngineManager::getInstance()->getScriptEngine()->sendEvent(&event);
     }
 #endif // #if CC_ENABLE_SCRIPT_BINDING
 }

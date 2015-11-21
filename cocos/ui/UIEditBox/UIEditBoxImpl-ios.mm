@@ -138,6 +138,17 @@ static const int CC_EDIT_BOX_PADDING = 5;
     if (sender == textField_) {
         [sender resignFirstResponder];
     }
+    //footprint:发送return事件
+#if CC_ENABLE_SCRIPT_BINDING
+    cocos2d::ui::EditBox*  pEditBox= getEditBoxImplIOS()->getEditBox();
+    if (NULL != pEditBox && 0 != pEditBox->getScriptEditBoxHandler())
+    {
+        cocos2d::CommonScriptData data(pEditBox->getScriptEditBoxHandler(), "return",pEditBox);
+        cocos2d::ScriptEvent event(cocos2d::kCommonEvent,(void*)&data);
+        cocos2d::ScriptEngineManager::getInstance()->getScriptEngine()->sendEvent(&event);
+    }
+    return YES;
+#endif
     return NO;
 }
 
@@ -199,10 +210,11 @@ static const int CC_EDIT_BOX_PADDING = 5;
         cocos2d::CommonScriptData data(pEditBox->getScriptEditBoxHandler(), "ended",pEditBox);
         cocos2d::ScriptEvent event(cocos2d::kCommonEvent,(void*)&data);
         cocos2d::ScriptEngineManager::getInstance()->getScriptEngine()->sendEvent(&event);
-        memset(data.eventName, 0, sizeof(data.eventName));
-        strncpy(data.eventName, "return", sizeof(data.eventName));
-        event.data = (void*)&data;
-        cocos2d::ScriptEngineManager::getInstance()->getScriptEngine()->sendEvent(&event);
+        //footprint:去掉return事件
+//        memset(data.eventName, 0, sizeof(data.eventName));
+//        strncpy(data.eventName, "return", sizeof(data.eventName));
+//        event.data = (void*)&data;
+//        cocos2d::ScriptEngineManager::getInstance()->getScriptEngine()->sendEvent(&event);
     }
 #endif
     

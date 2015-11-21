@@ -247,8 +247,8 @@ void EditBoxImplAndroid::onEnter(void)
 { // don't need to be implemented on android platform.
     
 }
-
-static void editBoxCallbackFunc(const char* pText, void* ctx)
+//footprint:添加actionId参数
+static void editBoxCallbackFunc(const char* pText, void* ctx, int actionId)
 {
     EditBoxImplAndroid* thiz = (EditBoxImplAndroid*)ctx;
     thiz->setText(pText);
@@ -271,10 +271,13 @@ static void editBoxCallbackFunc(const char* pText, void* ctx)
         strncpy(data.eventName, "ended", sizeof(data.eventName));
         event.data = (void*)&data;
         ScriptEngineManager::getInstance()->getScriptEngine()->sendEvent(&event);
-        memset(data.eventName, 0, sizeof(data.eventName));
-        strncpy(data.eventName, "return", sizeof(data.eventName));
-        event.data = (void*)&data;
-        ScriptEngineManager::getInstance()->getScriptEngine()->sendEvent(&event);
+        //footprint:添加actionId参数
+        if (0 == actionId) {
+            memset(data.eventName, 0, sizeof(data.eventName));
+            strncpy(data.eventName, "return", sizeof(data.eventName));
+            event.data = (void*)&data;
+            ScriptEngineManager::getInstance()->getScriptEngine()->sendEvent(&event);
+        }
     }
 #endif
 }
