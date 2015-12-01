@@ -143,6 +143,37 @@ TableViewCell *TableView::cellAtIndex(ssize_t idx)
     return nullptr;
 }
 
+//footprint:索引偏移量
+void TableView::scrollToIndex(ssize_t idx, bool animated)
+{
+    ssize_t num = _dataSource->numberOfCellsInTableView(this);
+    if (num > 0) {
+        Vec2 max = this->maxContainerOffset();
+        const Vec2 min = this->minContainerOffset();
+        
+        if (this->getDirection() == Direction::VERTICAL) {
+            for (ssize_t i = 0; i <= (num - (idx + 1)); i++) {
+                const Size cellSize = _dataSource->tableCellSizeForIndex(this, i);
+                max.y -= cellSize.height;
+                if (max.y < min.y) {
+                    max.y = min.y;
+                    break;
+                }
+            }
+        }else {
+            for (ssize_t i = 0; i <= (num - (idx + 1)); i++) {
+                const Size cellSize = _dataSource->tableCellSizeForIndex(this, i);
+                max.x -= cellSize.width;
+                if (max.x < min.x) {
+                    max.x = min.x;
+                    break;
+                }
+            }
+        }
+        self:setContentOffset(max, animated);
+    }
+}
+
 void TableView::updateCellAtIndex(ssize_t idx)
 {
     if (idx == CC_INVALID_INDEX)

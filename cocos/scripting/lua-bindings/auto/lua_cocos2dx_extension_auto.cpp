@@ -11054,7 +11054,7 @@ int lua_cocos2dx_extension_TableView_setVerticalFillOrder(lua_State* tolua_S)
 
     return 0;
 }
-int lua_cocos2dx_extension_TableView_scrollViewDidZoom(lua_State* tolua_S)
+int lua_cocos2dx_extension_TableView_scrollToIndex(lua_State* tolua_S)
 {
     int argc = 0;
     cocos2d::extension::TableView* cobj = nullptr;
@@ -11074,7 +11074,7 @@ int lua_cocos2dx_extension_TableView_scrollViewDidZoom(lua_State* tolua_S)
 #if COCOS2D_DEBUG >= 1
     if (!cobj) 
     {
-        tolua_error(tolua_S,"invalid 'cobj' in function 'lua_cocos2dx_extension_TableView_scrollViewDidZoom'", nullptr);
+        tolua_error(tolua_S,"invalid 'cobj' in function 'lua_cocos2dx_extension_TableView_scrollToIndex'", nullptr);
         return 0;
     }
 #endif
@@ -11082,23 +11082,39 @@ int lua_cocos2dx_extension_TableView_scrollViewDidZoom(lua_State* tolua_S)
     argc = lua_gettop(tolua_S)-1;
     if (argc == 1) 
     {
-        cocos2d::extension::ScrollView* arg0;
+        ssize_t arg0;
 
-        ok &= luaval_to_object<cocos2d::extension::ScrollView>(tolua_S, 2, "cc.ScrollView",&arg0);
+        ok &= luaval_to_ssize(tolua_S, 2, &arg0, "cc.TableView:scrollToIndex");
         if(!ok)
         {
-            tolua_error(tolua_S,"invalid arguments in function 'lua_cocos2dx_extension_TableView_scrollViewDidZoom'", nullptr);
+            tolua_error(tolua_S,"invalid arguments in function 'lua_cocos2dx_extension_TableView_scrollToIndex'", nullptr);
             return 0;
         }
-        cobj->scrollViewDidZoom(arg0);
+        cobj->scrollToIndex(arg0);
         return 0;
     }
-    luaL_error(tolua_S, "%s has wrong number of arguments: %d, was expecting %d \n", "cc.TableView:scrollViewDidZoom",argc, 1);
+    if (argc == 2) 
+    {
+        ssize_t arg0;
+        bool arg1;
+
+        ok &= luaval_to_ssize(tolua_S, 2, &arg0, "cc.TableView:scrollToIndex");
+
+        ok &= luaval_to_boolean(tolua_S, 3,&arg1, "cc.TableView:scrollToIndex");
+        if(!ok)
+        {
+            tolua_error(tolua_S,"invalid arguments in function 'lua_cocos2dx_extension_TableView_scrollToIndex'", nullptr);
+            return 0;
+        }
+        cobj->scrollToIndex(arg0, arg1);
+        return 0;
+    }
+    luaL_error(tolua_S, "%s has wrong number of arguments: %d, was expecting %d \n", "cc.TableView:scrollToIndex",argc, 1);
     return 0;
 
 #if COCOS2D_DEBUG >= 1
     tolua_lerror:
-    tolua_error(tolua_S,"#ferror in function 'lua_cocos2dx_extension_TableView_scrollViewDidZoom'.",&tolua_err);
+    tolua_error(tolua_S,"#ferror in function 'lua_cocos2dx_extension_TableView_scrollToIndex'.",&tolua_err);
 #endif
 
     return 0;
@@ -11407,6 +11423,55 @@ int lua_cocos2dx_extension_TableView_reloadData(lua_State* tolua_S)
 
     return 0;
 }
+int lua_cocos2dx_extension_TableView_scrollViewDidZoom(lua_State* tolua_S)
+{
+    int argc = 0;
+    cocos2d::extension::TableView* cobj = nullptr;
+    bool ok  = true;
+
+#if COCOS2D_DEBUG >= 1
+    tolua_Error tolua_err;
+#endif
+
+
+#if COCOS2D_DEBUG >= 1
+    if (!tolua_isusertype(tolua_S,1,"cc.TableView",0,&tolua_err)) goto tolua_lerror;
+#endif
+
+    cobj = (cocos2d::extension::TableView*)tolua_tousertype(tolua_S,1,0);
+
+#if COCOS2D_DEBUG >= 1
+    if (!cobj) 
+    {
+        tolua_error(tolua_S,"invalid 'cobj' in function 'lua_cocos2dx_extension_TableView_scrollViewDidZoom'", nullptr);
+        return 0;
+    }
+#endif
+
+    argc = lua_gettop(tolua_S)-1;
+    if (argc == 1) 
+    {
+        cocos2d::extension::ScrollView* arg0;
+
+        ok &= luaval_to_object<cocos2d::extension::ScrollView>(tolua_S, 2, "cc.ScrollView",&arg0);
+        if(!ok)
+        {
+            tolua_error(tolua_S,"invalid arguments in function 'lua_cocos2dx_extension_TableView_scrollViewDidZoom'", nullptr);
+            return 0;
+        }
+        cobj->scrollViewDidZoom(arg0);
+        return 0;
+    }
+    luaL_error(tolua_S, "%s has wrong number of arguments: %d, was expecting %d \n", "cc.TableView:scrollViewDidZoom",argc, 1);
+    return 0;
+
+#if COCOS2D_DEBUG >= 1
+    tolua_lerror:
+    tolua_error(tolua_S,"#ferror in function 'lua_cocos2dx_extension_TableView_scrollViewDidZoom'.",&tolua_err);
+#endif
+
+    return 0;
+}
 int lua_cocos2dx_extension_TableView_insertCellAtIndex(lua_State* tolua_S)
 {
     int argc = 0;
@@ -11609,13 +11674,14 @@ int lua_register_cocos2dx_extension_TableView(lua_State* tolua_S)
         tolua_function(tolua_S,"new",lua_cocos2dx_extension_TableView_constructor);
         tolua_function(tolua_S,"updateCellAtIndex",lua_cocos2dx_extension_TableView_updateCellAtIndex);
         tolua_function(tolua_S,"setVerticalFillOrder",lua_cocos2dx_extension_TableView_setVerticalFillOrder);
-        tolua_function(tolua_S,"scrollViewDidZoom",lua_cocos2dx_extension_TableView_scrollViewDidZoom);
+        tolua_function(tolua_S,"scrollToIndex",lua_cocos2dx_extension_TableView_scrollToIndex);
         tolua_function(tolua_S,"_updateContentSize",lua_cocos2dx_extension_TableView__updateContentSize);
         tolua_function(tolua_S,"getVerticalFillOrder",lua_cocos2dx_extension_TableView_getVerticalFillOrder);
         tolua_function(tolua_S,"removeCellAtIndex",lua_cocos2dx_extension_TableView_removeCellAtIndex);
         tolua_function(tolua_S,"initWithViewSize",lua_cocos2dx_extension_TableView_initWithViewSize);
         tolua_function(tolua_S,"scrollViewDidScroll",lua_cocos2dx_extension_TableView_scrollViewDidScroll);
         tolua_function(tolua_S,"reloadData",lua_cocos2dx_extension_TableView_reloadData);
+        tolua_function(tolua_S,"scrollViewDidZoom",lua_cocos2dx_extension_TableView_scrollViewDidZoom);
         tolua_function(tolua_S,"insertCellAtIndex",lua_cocos2dx_extension_TableView_insertCellAtIndex);
         tolua_function(tolua_S,"cellAtIndex",lua_cocos2dx_extension_TableView_cellAtIndex);
         tolua_function(tolua_S,"dequeueCell",lua_cocos2dx_extension_TableView_dequeueCell);

@@ -266,6 +266,8 @@ public:
      * @return a cell at a given index
      */
     TableViewCell *cellAtIndex(ssize_t idx);
+    
+    void scrollToIndex(ssize_t idx, bool animated = false); //footprint:索引偏移量
 
     // Overrides
     virtual void scrollViewDidScroll(ScrollView* view) override;
