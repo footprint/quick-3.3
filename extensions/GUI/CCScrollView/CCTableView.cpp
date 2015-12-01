@@ -152,7 +152,7 @@ void TableView::scrollToIndex(ssize_t idx, bool animated)
         const Vec2 min = this->minContainerOffset();
         
         if (this->getDirection() == Direction::VERTICAL) {
-            for (ssize_t i = 0; i <= (num - (idx + 1)); i++) {
+            for (ssize_t i = 0; i < (num - (idx + 1)); i++) {
                 const Size cellSize = _dataSource->tableCellSizeForIndex(this, i);
                 max.y -= cellSize.height;
                 if (max.y < min.y) {
@@ -161,7 +161,7 @@ void TableView::scrollToIndex(ssize_t idx, bool animated)
                 }
             }
         }else {
-            for (ssize_t i = 0; i <= (num - (idx + 1)); i++) {
+            for (ssize_t i = 0; i < (num - (idx + 1)); i++) {
                 const Size cellSize = _dataSource->tableCellSizeForIndex(this, i);
                 max.x -= cellSize.width;
                 if (max.x < min.x) {
