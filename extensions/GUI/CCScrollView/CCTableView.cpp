@@ -170,7 +170,7 @@ void TableView::scrollToIndex(ssize_t idx, bool animated)
                 }
             }
         }
-        self:setContentOffset(max, animated);
+        this->setContentOffset(max, animated);
     }
 }
 
