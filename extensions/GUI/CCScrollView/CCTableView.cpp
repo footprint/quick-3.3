@@ -161,7 +161,7 @@ void TableView::scrollToIndex(ssize_t idx, bool animated)
                 }
             }
         }else {
-            for (ssize_t i = 0; i < (num - (idx + 1)); i++) {
+            for (ssize_t i = 0; i < idx; i++) {
                 const Size cellSize = _dataSource->tableCellSizeForIndex(this, i);
                 max.x -= cellSize.width;
                 if (max.x < min.x) {
