@@ -1190,6 +1190,12 @@ void EventDispatcher::sortEventListenersOfSceneGraphPriority(const EventListener
     // Reset priority index
     _nodePriorityIndex = 0;
     _nodePriorityMap.clear();
+    
+    //footprint:增加NotificationNode的触摸事件处理
+    auto node = Director::getInstance()->getNotificationNode();
+    if (node) {
+        visitTarget(node, false);
+    }
 
     visitTarget(rootNode, true);
     
