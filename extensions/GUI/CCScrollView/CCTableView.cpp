@@ -160,6 +160,9 @@ void TableView::scrollToIndex(ssize_t idx, bool animated)
                     break;
                 }
             }
+            if (max.y < min.y) {
+                max.y = min.y;
+            }
         }else {
             for (ssize_t i = 0; i < idx; i++) {
                 const Size cellSize = _dataSource->tableCellSizeForIndex(this, i);
@@ -168,6 +171,9 @@ void TableView::scrollToIndex(ssize_t idx, bool animated)
                     max.x = min.x;
                     break;
                 }
+            }
+            if (max.x < min.x) {
+                max.x = min.x;
             }
         }
         this->setContentOffset(max, animated);
