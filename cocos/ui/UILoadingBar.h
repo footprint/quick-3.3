@@ -106,11 +106,26 @@ public:
     void setPercent(float percent);
     
     /**
+     * Changes the progress direction of loadingbar.
+     *
+     * @param percent    percent value from 1 to 100.
+     */
+    void setPercentage(float percent); //footprint+++
+    
+    /**
      * Gets the progress direction of loadingbar.
      *
      * @return percent value from 1 to 100.
      */
     float getPercent() const;
+    
+    /**
+     * Gets the progress direction of loadingbar.
+     *
+     * @return percent value from 1 to 100.
+     */
+    float getPercentage() const; //footprint+++
+    
     
     /**
      * Sets if loadingbar is using scale9 renderer.

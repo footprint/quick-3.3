@@ -381,6 +381,11 @@ void Slider::setPercent(int percent)
     }
 }
     
+void Slider::setPercentage(float percent)
+{
+    setPercent(percent);
+}
+    
 bool Slider::hitTest(const cocos2d::Vec2 &pt)
 {
     Vec2 nsp = this->_slidBallNormalRenderer->convertToNodeSpace(pt);
@@ -460,6 +465,11 @@ void Slider::percentChangedEvent()
 int Slider::getPercent()const
 {
     return _percent;
+}
+    
+int Slider::getPercentage()const
+{
+    return getPercent();
 }
 
 void Slider::onSizeChanged()

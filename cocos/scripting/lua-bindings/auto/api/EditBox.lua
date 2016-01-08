@@ -92,11 +92,21 @@
 -- @param #int handler
         
 --------------------------------
+-- 
+-- @function [parent=#EditBox] openKeyboard 
+-- @param self
+        
+--------------------------------
 -- Set the placeholder's font size.<br>
 -- param fontSize The font size.
 -- @function [parent=#EditBox] setPlaceholderFontSize 
 -- @param self
 -- @param #int fontSize
+        
+--------------------------------
+-- 
+-- @function [parent=#EditBox] closeKeyboard 
+-- @param self
         
 --------------------------------
 -- Set the input mode of the edit box.<br>

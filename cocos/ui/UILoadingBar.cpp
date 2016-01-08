@@ -286,6 +286,11 @@ void LoadingBar::setPercent(float percent)
     this->updateProgressBar();
 }
     
+void LoadingBar::setPercentage(float percent)
+{
+    setPercent(percent);
+}
+    
 void LoadingBar::updateProgressBar()
 {
     if (_scale9Enabled)
@@ -305,6 +310,11 @@ void LoadingBar::updateProgressBar()
 float LoadingBar::getPercent() const
 {
     return _percent;
+}
+    
+float LoadingBar::getPercentage() const
+{
+    return getPercent();
 }
 
 void LoadingBar::onSizeChanged()
