@@ -88,11 +88,12 @@
 -- @param #bool able
         
 --------------------------------
--- Gets the progress direction of slider.<br>
--- return percent    percent value from 1 to 100.
--- @function [parent=#Slider] getPercent 
+--  When user pressed the button, the button will zoom to a scale.<br>
+-- The final scale of the button  equals (button original scale + _zoomScale)<br>
+-- since v3.3
+-- @function [parent=#Slider] setZoomScale 
 -- @param self
--- @return int#int ret (return value: int)
+-- @param #float scale
         
 --------------------------------
 -- Sets capinsets for slider, if slider is using scale9 renderer.<br>
@@ -130,32 +131,17 @@
 -- @return bool#bool ret (return value: bool)
         
 --------------------------------
--- Gets the progress direction of slider.<br>
--- return percent    percent value from 1 to 100.
--- @function [parent=#Slider] getPercentage 
--- @param self
--- @return int#int ret (return value: int)
-        
---------------------------------
 -- 
 -- @function [parent=#Slider] getCapInsetsBarRenderer 
 -- @param self
 -- @return rect_table#rect_table ret (return value: rect_table)
         
 --------------------------------
---  When user pressed the button, the button will zoom to a scale.<br>
--- The final scale of the button  equals (button original scale + _zoomScale)<br>
--- since v3.3
--- @function [parent=#Slider] setZoomScale 
+-- Gets the progress direction of slider.<br>
+-- return percent    percent value from 1 to 100.
+-- @function [parent=#Slider] getPercent 
 -- @param self
--- @param #float scale
-        
---------------------------------
--- Changes the progress direction of slider.<br>
--- param percent    percent value from 1 to 100.
--- @function [parent=#Slider] setPercentage 
--- @param self
--- @param #float percent
+-- @return int#int ret (return value: int)
         
 --------------------------------
 -- @overload self, string, string, int         

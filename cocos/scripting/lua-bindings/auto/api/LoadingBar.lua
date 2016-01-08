@@ -29,25 +29,11 @@
 -- @param #int direction
         
 --------------------------------
--- Gets the progress direction of loadingbar.<br>
--- return percent value from 1 to 100.
--- @function [parent=#LoadingBar] getPercentage 
--- @param self
--- @return float#float ret (return value: float)
-        
---------------------------------
 -- Sets if loadingbar is using scale9 renderer.<br>
 -- param enabled true that using scale9 renderer, false otherwise.
 -- @function [parent=#LoadingBar] setScale9Enabled 
 -- @param self
 -- @param #bool enabled
-        
---------------------------------
--- Gets the progress direction of loadingbar.<br>
--- return percent value from 1 to 100.
--- @function [parent=#LoadingBar] getPercent 
--- @param self
--- @return float#float ret (return value: float)
         
 --------------------------------
 -- Sets capinsets for loadingbar, if loadingbar is using scale9 renderer.<br>
@@ -77,11 +63,11 @@
 -- @return bool#bool ret (return value: bool)
         
 --------------------------------
--- Changes the progress direction of loadingbar.<br>
--- param percent    percent value from 1 to 100.
--- @function [parent=#LoadingBar] setPercentage 
+-- Gets the progress direction of loadingbar.<br>
+-- return percent value from 1 to 100.
+-- @function [parent=#LoadingBar] getPercent 
 -- @param self
--- @param #float percent
+-- @return float#float ret (return value: float)
         
 --------------------------------
 -- @overload self, string, float         

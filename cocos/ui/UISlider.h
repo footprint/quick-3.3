@@ -180,25 +180,11 @@ public:
     void setPercent(int percent);
     
     /**
-     * Changes the progress direction of slider.
-     *
-     * @param percent    percent value from 1 to 100.
-     */
-    void setPercentage(float percent); //footprint+++
-    
-    /**
      * Gets the progress direction of slider.
      *
      * @return percent    percent value from 1 to 100.
      */
     int getPercent()const;
-    
-    /**
-     * Gets the progress direction of slider.
-     *
-     * @return percent    percent value from 1 to 100.
-     */
-    int getPercentage()const; //footprint+++
     
     /**
      * Add call back function called when slider's percent has changed to slider.

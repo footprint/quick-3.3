@@ -10714,53 +10714,6 @@ int lua_cocos2dx_ui_LoadingBar_setDirection(lua_State* tolua_S)
 
     return 0;
 }
-int lua_cocos2dx_ui_LoadingBar_getPercentage(lua_State* tolua_S)
-{
-    int argc = 0;
-    cocos2d::ui::LoadingBar* cobj = nullptr;
-    bool ok  = true;
-
-#if COCOS2D_DEBUG >= 1
-    tolua_Error tolua_err;
-#endif
-
-
-#if COCOS2D_DEBUG >= 1
-    if (!tolua_isusertype(tolua_S,1,"ccui.LoadingBar",0,&tolua_err)) goto tolua_lerror;
-#endif
-
-    cobj = (cocos2d::ui::LoadingBar*)tolua_tousertype(tolua_S,1,0);
-
-#if COCOS2D_DEBUG >= 1
-    if (!cobj) 
-    {
-        tolua_error(tolua_S,"invalid 'cobj' in function 'lua_cocos2dx_ui_LoadingBar_getPercentage'", nullptr);
-        return 0;
-    }
-#endif
-
-    argc = lua_gettop(tolua_S)-1;
-    if (argc == 0) 
-    {
-        if(!ok)
-        {
-            tolua_error(tolua_S,"invalid arguments in function 'lua_cocos2dx_ui_LoadingBar_getPercentage'", nullptr);
-            return 0;
-        }
-        double ret = cobj->getPercentage();
-        tolua_pushnumber(tolua_S,(lua_Number)ret);
-        return 1;
-    }
-    luaL_error(tolua_S, "%s has wrong number of arguments: %d, was expecting %d \n", "ccui.LoadingBar:getPercentage",argc, 0);
-    return 0;
-
-#if COCOS2D_DEBUG >= 1
-    tolua_lerror:
-    tolua_error(tolua_S,"#ferror in function 'lua_cocos2dx_ui_LoadingBar_getPercentage'.",&tolua_err);
-#endif
-
-    return 0;
-}
 int lua_cocos2dx_ui_LoadingBar_setScale9Enabled(lua_State* tolua_S)
 {
     int argc = 0;
@@ -10806,53 +10759,6 @@ int lua_cocos2dx_ui_LoadingBar_setScale9Enabled(lua_State* tolua_S)
 #if COCOS2D_DEBUG >= 1
     tolua_lerror:
     tolua_error(tolua_S,"#ferror in function 'lua_cocos2dx_ui_LoadingBar_setScale9Enabled'.",&tolua_err);
-#endif
-
-    return 0;
-}
-int lua_cocos2dx_ui_LoadingBar_getPercent(lua_State* tolua_S)
-{
-    int argc = 0;
-    cocos2d::ui::LoadingBar* cobj = nullptr;
-    bool ok  = true;
-
-#if COCOS2D_DEBUG >= 1
-    tolua_Error tolua_err;
-#endif
-
-
-#if COCOS2D_DEBUG >= 1
-    if (!tolua_isusertype(tolua_S,1,"ccui.LoadingBar",0,&tolua_err)) goto tolua_lerror;
-#endif
-
-    cobj = (cocos2d::ui::LoadingBar*)tolua_tousertype(tolua_S,1,0);
-
-#if COCOS2D_DEBUG >= 1
-    if (!cobj) 
-    {
-        tolua_error(tolua_S,"invalid 'cobj' in function 'lua_cocos2dx_ui_LoadingBar_getPercent'", nullptr);
-        return 0;
-    }
-#endif
-
-    argc = lua_gettop(tolua_S)-1;
-    if (argc == 0) 
-    {
-        if(!ok)
-        {
-            tolua_error(tolua_S,"invalid arguments in function 'lua_cocos2dx_ui_LoadingBar_getPercent'", nullptr);
-            return 0;
-        }
-        double ret = cobj->getPercent();
-        tolua_pushnumber(tolua_S,(lua_Number)ret);
-        return 1;
-    }
-    luaL_error(tolua_S, "%s has wrong number of arguments: %d, was expecting %d \n", "ccui.LoadingBar:getPercent",argc, 0);
-    return 0;
-
-#if COCOS2D_DEBUG >= 1
-    tolua_lerror:
-    tolua_error(tolua_S,"#ferror in function 'lua_cocos2dx_ui_LoadingBar_getPercent'.",&tolua_err);
 #endif
 
     return 0;
@@ -11047,7 +10953,7 @@ int lua_cocos2dx_ui_LoadingBar_isScale9Enabled(lua_State* tolua_S)
 
     return 0;
 }
-int lua_cocos2dx_ui_LoadingBar_setPercentage(lua_State* tolua_S)
+int lua_cocos2dx_ui_LoadingBar_getPercent(lua_State* tolua_S)
 {
     int argc = 0;
     cocos2d::ui::LoadingBar* cobj = nullptr;
@@ -11067,31 +10973,29 @@ int lua_cocos2dx_ui_LoadingBar_setPercentage(lua_State* tolua_S)
 #if COCOS2D_DEBUG >= 1
     if (!cobj) 
     {
-        tolua_error(tolua_S,"invalid 'cobj' in function 'lua_cocos2dx_ui_LoadingBar_setPercentage'", nullptr);
+        tolua_error(tolua_S,"invalid 'cobj' in function 'lua_cocos2dx_ui_LoadingBar_getPercent'", nullptr);
         return 0;
     }
 #endif
 
     argc = lua_gettop(tolua_S)-1;
-    if (argc == 1) 
+    if (argc == 0) 
     {
-        double arg0;
-
-        ok &= luaval_to_number(tolua_S, 2,&arg0, "ccui.LoadingBar:setPercentage");
         if(!ok)
         {
-            tolua_error(tolua_S,"invalid arguments in function 'lua_cocos2dx_ui_LoadingBar_setPercentage'", nullptr);
+            tolua_error(tolua_S,"invalid arguments in function 'lua_cocos2dx_ui_LoadingBar_getPercent'", nullptr);
             return 0;
         }
-        cobj->setPercentage(arg0);
-        return 0;
+        double ret = cobj->getPercent();
+        tolua_pushnumber(tolua_S,(lua_Number)ret);
+        return 1;
     }
-    luaL_error(tolua_S, "%s has wrong number of arguments: %d, was expecting %d \n", "ccui.LoadingBar:setPercentage",argc, 1);
+    luaL_error(tolua_S, "%s has wrong number of arguments: %d, was expecting %d \n", "ccui.LoadingBar:getPercent",argc, 0);
     return 0;
 
 #if COCOS2D_DEBUG >= 1
     tolua_lerror:
-    tolua_error(tolua_S,"#ferror in function 'lua_cocos2dx_ui_LoadingBar_setPercentage'.",&tolua_err);
+    tolua_error(tolua_S,"#ferror in function 'lua_cocos2dx_ui_LoadingBar_getPercent'.",&tolua_err);
 #endif
 
     return 0;
@@ -11279,14 +11183,12 @@ int lua_register_cocos2dx_ui_LoadingBar(lua_State* tolua_S)
         tolua_function(tolua_S,"setPercent",lua_cocos2dx_ui_LoadingBar_setPercent);
         tolua_function(tolua_S,"loadTexture",lua_cocos2dx_ui_LoadingBar_loadTexture);
         tolua_function(tolua_S,"setDirection",lua_cocos2dx_ui_LoadingBar_setDirection);
-        tolua_function(tolua_S,"getPercentage",lua_cocos2dx_ui_LoadingBar_getPercentage);
         tolua_function(tolua_S,"setScale9Enabled",lua_cocos2dx_ui_LoadingBar_setScale9Enabled);
-        tolua_function(tolua_S,"getPercent",lua_cocos2dx_ui_LoadingBar_getPercent);
         tolua_function(tolua_S,"setCapInsets",lua_cocos2dx_ui_LoadingBar_setCapInsets);
         tolua_function(tolua_S,"getDirection",lua_cocos2dx_ui_LoadingBar_getDirection);
         tolua_function(tolua_S,"getCapInsets",lua_cocos2dx_ui_LoadingBar_getCapInsets);
         tolua_function(tolua_S,"isScale9Enabled",lua_cocos2dx_ui_LoadingBar_isScale9Enabled);
-        tolua_function(tolua_S,"setPercentage",lua_cocos2dx_ui_LoadingBar_setPercentage);
+        tolua_function(tolua_S,"getPercent",lua_cocos2dx_ui_LoadingBar_getPercent);
         tolua_function(tolua_S,"create", lua_cocos2dx_ui_LoadingBar_create);
         tolua_function(tolua_S,"createInstance", lua_cocos2dx_ui_LoadingBar_createInstance);
     tolua_endmodule(tolua_S);
@@ -14706,7 +14608,7 @@ int lua_cocos2dx_ui_Slider_setScale9Enabled(lua_State* tolua_S)
 
     return 0;
 }
-int lua_cocos2dx_ui_Slider_getPercent(lua_State* tolua_S)
+int lua_cocos2dx_ui_Slider_setZoomScale(lua_State* tolua_S)
 {
     int argc = 0;
     cocos2d::ui::Slider* cobj = nullptr;
@@ -14726,29 +14628,31 @@ int lua_cocos2dx_ui_Slider_getPercent(lua_State* tolua_S)
 #if COCOS2D_DEBUG >= 1
     if (!cobj) 
     {
-        tolua_error(tolua_S,"invalid 'cobj' in function 'lua_cocos2dx_ui_Slider_getPercent'", nullptr);
+        tolua_error(tolua_S,"invalid 'cobj' in function 'lua_cocos2dx_ui_Slider_setZoomScale'", nullptr);
         return 0;
     }
 #endif
 
     argc = lua_gettop(tolua_S)-1;
-    if (argc == 0) 
+    if (argc == 1) 
     {
+        double arg0;
+
+        ok &= luaval_to_number(tolua_S, 2,&arg0, "ccui.Slider:setZoomScale");
         if(!ok)
         {
-            tolua_error(tolua_S,"invalid arguments in function 'lua_cocos2dx_ui_Slider_getPercent'", nullptr);
+            tolua_error(tolua_S,"invalid arguments in function 'lua_cocos2dx_ui_Slider_setZoomScale'", nullptr);
             return 0;
         }
-        int ret = cobj->getPercent();
-        tolua_pushnumber(tolua_S,(lua_Number)ret);
-        return 1;
+        cobj->setZoomScale(arg0);
+        return 0;
     }
-    luaL_error(tolua_S, "%s has wrong number of arguments: %d, was expecting %d \n", "ccui.Slider:getPercent",argc, 0);
+    luaL_error(tolua_S, "%s has wrong number of arguments: %d, was expecting %d \n", "ccui.Slider:setZoomScale",argc, 1);
     return 0;
 
 #if COCOS2D_DEBUG >= 1
     tolua_lerror:
-    tolua_error(tolua_S,"#ferror in function 'lua_cocos2dx_ui_Slider_getPercent'.",&tolua_err);
+    tolua_error(tolua_S,"#ferror in function 'lua_cocos2dx_ui_Slider_setZoomScale'.",&tolua_err);
 #endif
 
     return 0;
@@ -15014,53 +14918,6 @@ int lua_cocos2dx_ui_Slider_isScale9Enabled(lua_State* tolua_S)
 
     return 0;
 }
-int lua_cocos2dx_ui_Slider_getPercentage(lua_State* tolua_S)
-{
-    int argc = 0;
-    cocos2d::ui::Slider* cobj = nullptr;
-    bool ok  = true;
-
-#if COCOS2D_DEBUG >= 1
-    tolua_Error tolua_err;
-#endif
-
-
-#if COCOS2D_DEBUG >= 1
-    if (!tolua_isusertype(tolua_S,1,"ccui.Slider",0,&tolua_err)) goto tolua_lerror;
-#endif
-
-    cobj = (cocos2d::ui::Slider*)tolua_tousertype(tolua_S,1,0);
-
-#if COCOS2D_DEBUG >= 1
-    if (!cobj) 
-    {
-        tolua_error(tolua_S,"invalid 'cobj' in function 'lua_cocos2dx_ui_Slider_getPercentage'", nullptr);
-        return 0;
-    }
-#endif
-
-    argc = lua_gettop(tolua_S)-1;
-    if (argc == 0) 
-    {
-        if(!ok)
-        {
-            tolua_error(tolua_S,"invalid arguments in function 'lua_cocos2dx_ui_Slider_getPercentage'", nullptr);
-            return 0;
-        }
-        int ret = cobj->getPercentage();
-        tolua_pushnumber(tolua_S,(lua_Number)ret);
-        return 1;
-    }
-    luaL_error(tolua_S, "%s has wrong number of arguments: %d, was expecting %d \n", "ccui.Slider:getPercentage",argc, 0);
-    return 0;
-
-#if COCOS2D_DEBUG >= 1
-    tolua_lerror:
-    tolua_error(tolua_S,"#ferror in function 'lua_cocos2dx_ui_Slider_getPercentage'.",&tolua_err);
-#endif
-
-    return 0;
-}
 int lua_cocos2dx_ui_Slider_getCapInsetsBarRenderer(lua_State* tolua_S)
 {
     int argc = 0;
@@ -15108,7 +14965,7 @@ int lua_cocos2dx_ui_Slider_getCapInsetsBarRenderer(lua_State* tolua_S)
 
     return 0;
 }
-int lua_cocos2dx_ui_Slider_setZoomScale(lua_State* tolua_S)
+int lua_cocos2dx_ui_Slider_getPercent(lua_State* tolua_S)
 {
     int argc = 0;
     cocos2d::ui::Slider* cobj = nullptr;
@@ -15128,80 +14985,29 @@ int lua_cocos2dx_ui_Slider_setZoomScale(lua_State* tolua_S)
 #if COCOS2D_DEBUG >= 1
     if (!cobj) 
     {
-        tolua_error(tolua_S,"invalid 'cobj' in function 'lua_cocos2dx_ui_Slider_setZoomScale'", nullptr);
+        tolua_error(tolua_S,"invalid 'cobj' in function 'lua_cocos2dx_ui_Slider_getPercent'", nullptr);
         return 0;
     }
 #endif
 
     argc = lua_gettop(tolua_S)-1;
-    if (argc == 1) 
+    if (argc == 0) 
     {
-        double arg0;
-
-        ok &= luaval_to_number(tolua_S, 2,&arg0, "ccui.Slider:setZoomScale");
         if(!ok)
         {
-            tolua_error(tolua_S,"invalid arguments in function 'lua_cocos2dx_ui_Slider_setZoomScale'", nullptr);
+            tolua_error(tolua_S,"invalid arguments in function 'lua_cocos2dx_ui_Slider_getPercent'", nullptr);
             return 0;
         }
-        cobj->setZoomScale(arg0);
-        return 0;
+        int ret = cobj->getPercent();
+        tolua_pushnumber(tolua_S,(lua_Number)ret);
+        return 1;
     }
-    luaL_error(tolua_S, "%s has wrong number of arguments: %d, was expecting %d \n", "ccui.Slider:setZoomScale",argc, 1);
+    luaL_error(tolua_S, "%s has wrong number of arguments: %d, was expecting %d \n", "ccui.Slider:getPercent",argc, 0);
     return 0;
 
 #if COCOS2D_DEBUG >= 1
     tolua_lerror:
-    tolua_error(tolua_S,"#ferror in function 'lua_cocos2dx_ui_Slider_setZoomScale'.",&tolua_err);
-#endif
-
-    return 0;
-}
-int lua_cocos2dx_ui_Slider_setPercentage(lua_State* tolua_S)
-{
-    int argc = 0;
-    cocos2d::ui::Slider* cobj = nullptr;
-    bool ok  = true;
-
-#if COCOS2D_DEBUG >= 1
-    tolua_Error tolua_err;
-#endif
-
-
-#if COCOS2D_DEBUG >= 1
-    if (!tolua_isusertype(tolua_S,1,"ccui.Slider",0,&tolua_err)) goto tolua_lerror;
-#endif
-
-    cobj = (cocos2d::ui::Slider*)tolua_tousertype(tolua_S,1,0);
-
-#if COCOS2D_DEBUG >= 1
-    if (!cobj) 
-    {
-        tolua_error(tolua_S,"invalid 'cobj' in function 'lua_cocos2dx_ui_Slider_setPercentage'", nullptr);
-        return 0;
-    }
-#endif
-
-    argc = lua_gettop(tolua_S)-1;
-    if (argc == 1) 
-    {
-        double arg0;
-
-        ok &= luaval_to_number(tolua_S, 2,&arg0, "ccui.Slider:setPercentage");
-        if(!ok)
-        {
-            tolua_error(tolua_S,"invalid arguments in function 'lua_cocos2dx_ui_Slider_setPercentage'", nullptr);
-            return 0;
-        }
-        cobj->setPercentage(arg0);
-        return 0;
-    }
-    luaL_error(tolua_S, "%s has wrong number of arguments: %d, was expecting %d \n", "ccui.Slider:setPercentage",argc, 1);
-    return 0;
-
-#if COCOS2D_DEBUG >= 1
-    tolua_lerror:
-    tolua_error(tolua_S,"#ferror in function 'lua_cocos2dx_ui_Slider_setPercentage'.",&tolua_err);
+    tolua_error(tolua_S,"#ferror in function 'lua_cocos2dx_ui_Slider_getPercent'.",&tolua_err);
 #endif
 
     return 0;
@@ -15367,16 +15173,14 @@ int lua_register_cocos2dx_ui_Slider(lua_State* tolua_S)
         tolua_function(tolua_S,"setCapInsetsBarRenderer",lua_cocos2dx_ui_Slider_setCapInsetsBarRenderer);
         tolua_function(tolua_S,"getCapInsetsProgressBarRebderer",lua_cocos2dx_ui_Slider_getCapInsetsProgressBarRebderer);
         tolua_function(tolua_S,"setScale9Enabled",lua_cocos2dx_ui_Slider_setScale9Enabled);
-        tolua_function(tolua_S,"getPercent",lua_cocos2dx_ui_Slider_getPercent);
+        tolua_function(tolua_S,"setZoomScale",lua_cocos2dx_ui_Slider_setZoomScale);
         tolua_function(tolua_S,"setCapInsets",lua_cocos2dx_ui_Slider_setCapInsets);
         tolua_function(tolua_S,"getZoomScale",lua_cocos2dx_ui_Slider_getZoomScale);
         tolua_function(tolua_S,"addEventListener",lua_cocos2dx_ui_Slider_addEventListener);
         tolua_function(tolua_S,"loadSlidBallTexturePressed",lua_cocos2dx_ui_Slider_loadSlidBallTexturePressed);
         tolua_function(tolua_S,"isScale9Enabled",lua_cocos2dx_ui_Slider_isScale9Enabled);
-        tolua_function(tolua_S,"getPercentage",lua_cocos2dx_ui_Slider_getPercentage);
         tolua_function(tolua_S,"getCapInsetsBarRenderer",lua_cocos2dx_ui_Slider_getCapInsetsBarRenderer);
-        tolua_function(tolua_S,"setZoomScale",lua_cocos2dx_ui_Slider_setZoomScale);
-        tolua_function(tolua_S,"setPercentage",lua_cocos2dx_ui_Slider_setPercentage);
+        tolua_function(tolua_S,"getPercent",lua_cocos2dx_ui_Slider_getPercent);
         tolua_function(tolua_S,"create", lua_cocos2dx_ui_Slider_create);
         tolua_function(tolua_S,"createInstance", lua_cocos2dx_ui_Slider_createInstance);
     tolua_endmodule(tolua_S);
