@@ -261,8 +261,10 @@ namespace ui {
         virtual void setSpriteFrame(SpriteFrame * spriteFrame, const Rect& capInsets = Rect::ZERO);
         
         // overrides
+        virtual void setGlobalZOrder(float globalZOrder) override;
         virtual void setContentSize(const Size & size) override;
         virtual void setAnchorPoint(const Vec2& anchorPoint) override;
+        
         
         /**
          *@since v3.4

@@ -1301,6 +1301,20 @@ void Widget::copyProperties(Widget *widget)
         CCASSERT(this->getScaleX() == this->getScaleY(), "");
         return this->getScaleX();
     }
+    
+    void Widget::setGlobalZOrder(float globalZOrder)
+    {
+        for (auto&& child : _protectedChildren)
+        {
+            child->setGlobalZOrder(globalZOrder);
+        }
+        for (auto&& child : _children)
+        {
+            child->setGlobalZOrder(globalZOrder);
+        }
+        ProtectedNode::setGlobalZOrder(globalZOrder);
+    }
+    
 
 
 /*temp action*/

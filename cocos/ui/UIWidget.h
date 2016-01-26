@@ -348,6 +348,7 @@ public:
     virtual float getScaleX() const override;
     virtual float getScaleY() const override;
     virtual float getScale() const override;
+    virtual void setGlobalZOrder(float globalZOrder) override;
     using Node::getScaleZ;
     
     /*
