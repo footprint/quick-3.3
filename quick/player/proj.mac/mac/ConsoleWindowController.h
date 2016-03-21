@@ -8,6 +8,7 @@
     IBOutlet NSButton *topCheckBox;
     NSMutableArray *linesCount;
     NSUInteger traceCount;
+    NSMutableArray *logs;
 }
 
 @property (assign) IBOutlet NSTextView *textView;

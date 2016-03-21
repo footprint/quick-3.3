@@ -6,8 +6,8 @@
 @end
 
 #define SKIP_LINES_COUNT    3
-#define MAX_LINE_LEN        4096
-#define MAX_LINES_COUNT     200
+#define MAX_LINE_LEN        10240
+#define MAX_LINES_COUNT     2000
 
 @implementation ConsoleWindowController
 @synthesize textView;
@@ -18,6 +18,7 @@
     if (self)
     {
         // Initialization code here.
+        logs = [[NSMutableArray array] retain];
         linesCount = [[NSMutableArray arrayWithCapacity:MAX_LINES_COUNT + 1] retain];
     }
 
@@ -26,6 +27,7 @@
 
 - (void)dealloc
 {
+    [logs release];
     [linesCount release];
     [super dealloc];
 }
@@ -38,29 +40,48 @@
 
 - (void) trace:(NSString*)msg
 {
-    if (traceCount >= SKIP_LINES_COUNT && [msg length] > MAX_LINE_LEN)
-    {
-        msg = [NSString stringWithFormat:@"%@ ...", [msg substringToIndex:MAX_LINE_LEN - 4]];
+    [logs addObject:msg];
+    
+    if ([logs count] == 1) {
+        [NSObject cancelPreviousPerformRequestsWithTarget:self];
+        [self performSelector:@selector(updateTextView) withObject:nil afterDelay:0.1];
     }
-    traceCount++;
+}
+
+- (void) updateTextView
+{
+    if (0 == [logs count]) {
+        return;
+    }
     NSFont *font = [NSFont fontWithName:@"Monaco" size:12.0];
     NSDictionary *attrsDictionary = [NSDictionary dictionaryWithObject:font forKey:NSFontAttributeName];
-    NSAttributedString *string = [[NSAttributedString alloc] initWithString:msg attributes:attrsDictionary];
-    NSNumber *len = [NSNumber numberWithUnsignedInteger:[string length]];
-    [linesCount addObject:len];
-
-	NSTextStorage *storage = [textView textStorage];
-	[storage beginEditing];
-	[storage appendAttributedString:string];
-
-    if ([linesCount count] >= MAX_LINES_COUNT)
-    {
-        len = [linesCount objectAtIndex:0];
-        [storage deleteCharactersInRange:NSMakeRange(0, [len unsignedIntegerValue])];
-        [linesCount removeObjectAtIndex:0];
+    
+    for (int i = 0; i < [logs count]; i++) {
+        NSString* msg = (NSString*)[logs objectAtIndex:i];
+        if (traceCount >= SKIP_LINES_COUNT && [msg length] > MAX_LINE_LEN)
+        {
+            msg = [NSString stringWithFormat:@"%@ ...", [msg substringToIndex:MAX_LINE_LEN - 4]];
+        }
+        traceCount++;
+        NSAttributedString *string = [[NSAttributedString alloc] initWithString:msg attributes:attrsDictionary];
+        NSNumber *len = [NSNumber numberWithUnsignedInteger:[string length]];
+        [linesCount addObject:len];
+        
+        NSTextStorage *storage = [textView textStorage];
+        [storage beginEditing];
+        [storage appendAttributedString:string];
+        
+        if ([linesCount count] >= MAX_LINES_COUNT)
+        {
+            len = [linesCount objectAtIndex:0];
+            [storage deleteCharactersInRange:NSMakeRange(0, [len unsignedIntegerValue])];
+            [linesCount removeObjectAtIndex:0];
+        }
+        [storage endEditing];
     }
+    
+    [logs removeAllObjects];
 
-	[storage endEditing];
     [self changeScroll];
 }
 
