@@ -227,6 +227,10 @@ public:
     @param pszFilePath        The path of the effect file
     */
     virtual void unloadEffect(const char* pszFilePath);
+    
+    //footprint
+    virtual float getDuration(const char* pszFilePath);
+
 };
 
 } // end of namespace CocosDenshion

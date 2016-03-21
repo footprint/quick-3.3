@@ -235,6 +235,16 @@ static CDBufferManager *bufferManager = nil;
     } else {
         return nil;
     }    
-}    
+}
+
+#pragma mark footprint
+-(float) getDuration:(NSString*) filePath {
+    int soundId = [bufferManager bufferForFile:filePath create:YES];
+    if (soundId != kCDNoBuffer) {
+        return [soundEngine bufferDurationInSeconds:soundId];
+    }
+    return -1.0f;
+}
+
 
 @end 

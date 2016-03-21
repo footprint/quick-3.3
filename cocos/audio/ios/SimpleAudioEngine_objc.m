@@ -71,14 +71,14 @@ static CDBufferManager *bufferManager = nil;
     [super dealloc];
 }
 
-+(void) end 
++(void) end
 {
     am = nil;
     [CDAudioManager end];
     [bufferManager release];
     [sharedEngine release];
     sharedEngine = nil;
-}    
+}
 
 #pragma mark SimpleAudioEngine - background music
 
@@ -103,11 +103,11 @@ static CDBufferManager *bufferManager = nil;
 
 -(void) pauseBackgroundMusic {
     [am pauseBackgroundMusic];
-}    
+}
 
 -(void) resumeBackgroundMusic {
     [am resumeBackgroundMusic];
-}    
+}
 
 -(void) rewindBackgroundMusic {
     [am rewindBackgroundMusic];
@@ -115,7 +115,7 @@ static CDBufferManager *bufferManager = nil;
 
 -(BOOL) isBackgroundMusicPlaying {
     return [am isBackgroundMusicPlaying];
-}    
+}
 
 -(BOOL) willPlayBackgroundMusic {
     return [am willPlayBackgroundMusic];
@@ -135,31 +135,31 @@ static CDBufferManager *bufferManager = nil;
         return [soundEngine playSound:soundId sourceGroupId:0 pitch:pitch pan:pan gain:gain loop:loop];
     } else {
         return CD_MUTE;
-    }    
+    }
 }
 
 -(void) stopEffect:(ALuint) soundId {
     [soundEngine stopSound:soundId];
-}    
+}
 
 -(void) pauseEffect:(ALuint) soundId {
-  [soundEngine pauseSound: soundId];
+    [soundEngine pauseSound: soundId];
 }
 
 -(void) pauseAllEffects {
-  [soundEngine pauseAllSounds];
+    [soundEngine pauseAllSounds];
 }
 
 -(void) resumeEffect:(ALuint) soundId {
-  [soundEngine resumeSound: soundId];
+    [soundEngine resumeSound: soundId];
 }
 
 -(void) resumeAllEffects {
-  [soundEngine resumeAllSounds];
+    [soundEngine resumeAllSounds];
 }
 
 -(void) stopAllEffects {
-  [soundEngine stopAllSounds];
+    [soundEngine stopAllSounds];
 }
 
 -(void) preloadEffect:(NSString*) filePath
@@ -187,7 +187,7 @@ static CDBufferManager *bufferManager = nil;
     if (mute_ != muteValue) {
         mute_ = muteValue;
         am.mute = mute_;
-    }    
+    }
 }
 
 -(BOOL) enabled
@@ -200,7 +200,7 @@ static CDBufferManager *bufferManager = nil;
     if (enabled_ != enabledValue) {
         enabled_ = enabledValue;
         am.enabled = enabled_;
-    }    
+    }
 }
 
 
@@ -208,23 +208,23 @@ static CDBufferManager *bufferManager = nil;
 -(float) backgroundMusicVolume
 {
     return am.backgroundMusic.volume;
-}    
+}
 
 -(void) setBackgroundMusicVolume:(float) volume
 {
     am.backgroundMusic.volume = volume;
-}    
+}
 
 #pragma mark SimpleAudioEngine - EffectsVolume
 -(float) effectsVolume
 {
     return am.soundEngine.masterGain;
-}    
+}
 
 -(void) setEffectsVolume:(float) volume
 {
     am.soundEngine.masterGain = volume;
-}    
+}
 
 -(CDSoundSource *) soundSourceForFile:(NSString*) filePath {
     int soundId = [bufferManager bufferForFile:filePath create:YES];
@@ -234,7 +234,17 @@ static CDBufferManager *bufferManager = nil;
         return result;
     } else {
         return nil;
-    }    
-}    
+    }
+}
+
+#pragma mark footprint
+-(float) getDuration:(NSString*) filePath {
+    int soundId = [bufferManager bufferForFile:filePath create:YES];
+    if (soundId != kCDNoBuffer) {
+        return [soundEngine bufferDurationInSeconds:soundId];
+    }
+    return -1.0f;
+}
+
 
 @end 
