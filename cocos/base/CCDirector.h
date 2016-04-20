@@ -134,6 +134,7 @@ public:
 
     /** Get current running Scene. Director can only run one Scene at a time */
     inline Scene* getRunningScene() { return _runningScene; }
+    inline Scene* getNextScene() { return _nextScene; } //footprint++
 
     /** Get the FPS value */
     inline double getAnimationInterval() { return _animationInterval; }
