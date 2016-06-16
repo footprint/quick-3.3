@@ -751,6 +751,10 @@ bool Widget::isSwallowTouches()const
 
 bool Widget::onTouchBegan(Touch *touch, Event *unusedEvent)
 {
+    //footprint:disable touch during scene transition
+    if (Director::getInstance()->getNextScene()) {
+        return false;
+    }
     _hitted = false;
     if (isVisible() && isEnabled() && isAncestorsEnabled() && isAncestorsVisible(this) )
     {
