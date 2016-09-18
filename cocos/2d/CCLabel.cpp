@@ -485,6 +485,16 @@ void Label::setString(const std::string& text)
     }
 }
 
+//footprint
+void Label::setGlobalZOrder(float globalZOrder)
+{
+    Node::setGlobalZOrder(globalZOrder);
+    if (_textSprite)
+    {
+        _textSprite->setGlobalZOrder(globalZOrder);
+    }
+}
+
 void Label::setAlignment(TextHAlignment hAlignment,TextVAlignment vAlignment)
 {
     if (hAlignment != _hAlignment || vAlignment != _vAlignment)
@@ -910,6 +920,7 @@ void Label::createSpriteWithFontDefinition()
 
     _textSprite = Sprite::createWithTexture(texture);
     _textSprite->setAnchorPoint(Vec2::ANCHOR_BOTTOM_LEFT);
+    _textSprite->setGlobalZOrder(getGlobalZOrder()); //footprint
     this->setContentSize(_textSprite->getContentSize());
     texture->release();
     if (_blendFuncDirty)

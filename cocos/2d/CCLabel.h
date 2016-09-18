@@ -138,6 +138,8 @@ public:
     virtual void setString(const std::string& text) override;
 
     virtual const std::string& getString() const override {  return _originalUTF8String; }
+    
+    virtual void setGlobalZOrder(float globalZOrder) override; //footprint
 
     /** Sets the text color of the label
      * Only support for TTF and system font
