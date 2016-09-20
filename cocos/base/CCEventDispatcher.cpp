@@ -1193,28 +1193,9 @@ void EventDispatcher::sortEventListenersOfSceneGraphPriority(const EventListener
     //footprint: fix notificationNode toch event
     Node* notificationNode = Director::getInstance()->getNotificationNode();
     if(notificationNode) {
-        visitTarget(notificationNode, true);
-        
-        // save result in temp variable for later use
-        std::unordered_map<Node*, int> notificationNodePriorityMap; // = _nodePriorityMap
-        for(auto kv : _nodePriorityMap) {
-            notificationNodePriorityMap[kv.first] = kv.second;
-        }
-        int notificationNodePriorityIndex = _nodePriorityIndex;
-        
-        // reset
-        _nodePriorityIndex = 0;
-        _nodePriorityMap.clear();
-        
         // visit rootNode
-        visitTarget(rootNode, true);
-        
-        // update priority map
-        for(auto kv : notificationNodePriorityMap) {
-            _nodePriorityMap[kv.first] = notificationNodePriorityMap[kv.first] + _nodePriorityIndex;
-        }
-        // update index
-        _nodePriorityIndex += notificationNodePriorityIndex;
+        visitTarget(rootNode, false);
+        visitTarget(notificationNode, true);
     } else {
         visitTarget(rootNode, true);
     }
