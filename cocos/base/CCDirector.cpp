@@ -163,6 +163,13 @@ bool Director::init(void)
 Director::~Director(void)
 {
     CCLOGINFO("deallocing Director: %p", this);
+    
+    //footprint
+    if (_notificationNode) {
+        _notificationNode->onExitTransitionDidStart();
+        _notificationNode->onExit();
+        _notificationNode->cleanup();
+    }
 
     CC_SAFE_RELEASE(_FPSLabel);
     CC_SAFE_RELEASE(_drawnVerticesLabel);
